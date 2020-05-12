@@ -50,10 +50,16 @@ public abstract class PluginManagerThatUseDynamicLoader extends BaseDynamicPlugi
         super(context);
     }
 
+    /**
+     * 位于宿主进程中
+     */
     @Override
     protected void onPluginServiceConnected(ComponentName name, IBinder service) {
+        // 拿到了插件进程的IBinder
         mPpsController = PluginProcessService.wrapBinder(service);
         try {
+            // 这里要进行跨进程的通信了：宿主进程把自己的PluginManager包裹成Binder传递给插件进程
+            // 这个Binder具有3种能力，插件进程可以使用：1、获取插件；2、获取Loader；3、获取RunTime
             mPpsController.setUuidManager(new UuidManagerBinder(PluginManagerThatUseDynamicLoader.this));
         } catch (DeadObjectException e) {
             if (mLogger.isErrorEnabled()) {
@@ -70,13 +76,14 @@ public abstract class PluginManagerThatUseDynamicLoader extends BaseDynamicPlugi
         }
 
         try {
+            // 这里要进行跨进程的通信了
             IBinder iBinder = mPpsController.getPluginLoader();
             if (iBinder != null) {
                 mPluginLoader = new BinderPluginLoader(iBinder);
             }
-        } catch (RemoteException ignored) {
+        } catch (RemoteException e) {
             if (mLogger.isErrorEnabled()) {
-                mLogger.error("onServiceConnected mPpsController getPluginLoader:", ignored);
+                mLogger.error("onServiceConnected mPpsController getPluginLoader:", e);
             }
         }
     }

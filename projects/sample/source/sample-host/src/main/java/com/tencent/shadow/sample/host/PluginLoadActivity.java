@@ -28,6 +28,9 @@ import com.tencent.shadow.dynamic.host.EnterCallback;
 import com.tencent.shadow.sample.constant.Constant;
 
 
+/**
+ * @author admin
+ */
 public class PluginLoadActivity extends Activity {
 
     private ViewGroup mViewGroup;
@@ -58,28 +61,28 @@ public class PluginLoadActivity extends Activity {
                 bundle.putString(Constant.KEY_PLUGIN_PART_KEY, getIntent().getStringExtra(Constant.KEY_PLUGIN_PART_KEY));
                 bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, getIntent().getStringExtra(Constant.KEY_ACTIVITY_CLASSNAME));
 
-                HostApplication.getApp().getPluginManager()
-                        .enter(PluginLoadActivity.this, Constant.FROM_ID_START_ACTIVITY, bundle, new EnterCallback() {
+                // 注意，这个enter是标准的代理模式，代理的是插件的PluginManagerImpl
+                HostApplication.getApp().getPluginManager().enter(PluginLoadActivity.this, Constant.FROM_ID_START_ACTIVITY, bundle, new EnterCallback() {
+                    @Override
+                    public void onShowLoadingView(final View view) {
+                        mHandler.post(new Runnable() {
                             @Override
-                            public void onShowLoadingView(final View view) {
-                                mHandler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mViewGroup.addView(view);
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void onCloseLoadingView() {
-                                finish();
-                            }
-
-                            @Override
-                            public void onEnterComplete() {
-
+                            public void run() {
+                                mViewGroup.addView(view);
                             }
                         });
+                    }
+
+                    @Override
+                    public void onCloseLoadingView() {
+                        finish();
+                    }
+
+                    @Override
+                    public void onEnterComplete() {
+
+                    }
+                });
             }
         });
     }

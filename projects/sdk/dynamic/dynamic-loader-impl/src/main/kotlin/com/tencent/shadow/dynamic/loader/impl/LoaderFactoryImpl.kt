@@ -23,7 +23,5 @@ import com.tencent.shadow.dynamic.host.LoaderFactory
 import com.tencent.shadow.dynamic.host.PluginLoaderImpl
 
 open class LoaderFactoryImpl : LoaderFactory {
-    override fun buildLoader(p0: String, p2: Context): PluginLoaderImpl {
-        return PluginLoaderBinder(DynamicPluginLoader(p2, p0))
-    }
+    override fun buildLoader(uuid: String, context: Context): PluginLoaderImpl = PluginLoaderBinder(DynamicPluginLoader(context, uuid))
 }

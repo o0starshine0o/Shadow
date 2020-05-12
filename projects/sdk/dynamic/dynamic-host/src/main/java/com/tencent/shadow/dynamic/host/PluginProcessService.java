@@ -35,7 +35,11 @@ import static com.tencent.shadow.dynamic.host.FailedException.ERROR_CODE_RUNTIME
 import static com.tencent.shadow.dynamic.host.FailedException.ERROR_CODE_UUID_MANAGER_DEAD_EXCEPTION;
 import static com.tencent.shadow.dynamic.host.FailedException.ERROR_CODE_UUID_MANAGER_NULL_EXCEPTION;
 
-
+/**
+ * 虽然这个PPS是位于dynamic-host中
+ * 但是确是作为宿主的依赖，要被预埋的Service继承（宿主要implementation这个Module）
+ * 并且代码是运行在插件的进程中！！！
+ */
 public class PluginProcessService extends BasePluginProcessService {
 
     private final PpsBinder mPpsControllerBinder = new PpsBinder(this);
@@ -96,6 +100,7 @@ public class PluginProcessService extends BasePluginProcessService {
             }
             InstalledApk installedApk;
             try {
+                // 使用mUuidManager（即从宿主进程传递来的binder）反过来调用宿主进程的PluginManagerThatUseDynamicLoader.getRuntime，构造一个InstalledApk返回到PPS内
                 installedApk = mUuidManager.getRuntime(uuid);
             } catch (RemoteException e) {
                 throw new FailedException(ERROR_CODE_UUID_MANAGER_DEAD_EXCEPTION, e.getMessage());
@@ -104,6 +109,7 @@ public class PluginProcessService extends BasePluginProcessService {
             }
 
             InstalledApk installedRuntimeApk = new InstalledApk(installedApk.apkFilePath, installedApk.oDexPath, installedApk.libraryPath);
+            // 将RuntimeClassLoader（这个就是下面说的DexClassLoader）插入到BootClassLoader与之间
             boolean loaded = DynamicRuntime.loadRuntime(installedRuntimeApk);
             if (loaded) {
                 DynamicRuntime.saveLastRuntimeInfo(this, installedRuntimeApk);

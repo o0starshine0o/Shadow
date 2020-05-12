@@ -1,5 +1,6 @@
 package com.tencent.shadow.sample.manager;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
@@ -17,6 +18,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
+/**
+ * @author admin
+ */
 public class SamplePluginManager extends FastPluginManager {
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -49,7 +53,7 @@ public class SamplePluginManager extends FastPluginManager {
      */
     @Override
     protected String getPluginProcessServiceName() {
-        return "com.tencent.shadow.sample.introduce_shadow_lib.MainPluginProcessService";
+        return "com.tencent.shadow.sample.plugin.manager.MainPluginProcessService";
     }
 
     @Override
@@ -76,7 +80,7 @@ public class SamplePluginManager extends FastPluginManager {
         final Bundle extras = bundle.getBundle(Constant.KEY_EXTRAS);
 
         if (callback != null) {
-            final View view = LayoutInflater.from(mCurrentContext).inflate(R.layout.activity_load_plugin, null);
+            @SuppressLint("InflateParams") final View view = LayoutInflater.from(mCurrentContext).inflate(R.layout.activity_load_plugin, null);
             callback.onShowLoadingView(view);
         }
 
@@ -84,13 +88,10 @@ public class SamplePluginManager extends FastPluginManager {
             @Override
             public void run() {
                 try {
-                    InstalledPlugin installedPlugin
-                            = installPlugin(pluginZipPath, null, true);//这个调用是阻塞的
+                    //这个调用是阻塞的
+                    InstalledPlugin installedPlugin = installPlugin(pluginZipPath, null, true);
                     Intent pluginIntent = new Intent();
-                    pluginIntent.setClassName(
-                            context.getPackageName(),
-                            className
-                    );
+                    pluginIntent.setClassName(context.getPackageName(), className);
                     if (extras != null) {
                         pluginIntent.replaceExtras(extras);
                     }
@@ -125,8 +126,8 @@ public class SamplePluginManager extends FastPluginManager {
             @Override
             public void run() {
                 try {
-                    InstalledPlugin installedPlugin
-                            = installPlugin(pluginZipPath, null, true);//这个调用是阻塞的
+                    //这个调用是阻塞的
+                    InstalledPlugin installedPlugin = installPlugin(pluginZipPath, null, true);
 
                     loadPlugin(installedPlugin.UUID, partKey);
 

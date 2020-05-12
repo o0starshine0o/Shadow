@@ -11,19 +11,34 @@ android {
 dependencies {
     //Shadow Transform后业务代码会有一部分实际引用runtime中的类
     //如果不以compileOnly方式依赖，会导致其他Transform或者Proguard找不到这些类
-    compileOnly "com.tencent.shadow.core:runtime:$shadow_version"
+    compileOnly "com.xianlai.shadow.core:runtime:$shadow_version"
 }
 
 //这段buildscript配置的dependencies是为了apply plugin: 'com.tencent.shadow.plugin'能找到实现
 buildscript {
     repositories {
-        google()
-        jcenter()
         mavenLocal()
+        // central仓和jcenter仓的聚合仓
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        // proxy: https://maven.google.com/
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        // proxy: https://plugins.gradle.org/m2/
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        // proxy: http://repo.spring.io/libs-milestone/
+        maven { url 'https://maven.aliyun.com/repository/spring' }
+        // proxy: http://repo.spring.io/plugins-release/
+        maven { url 'https://maven.aliyun.com/repository/spring-plugin' }
+        // proxy: https://repo.grails.org/grails/core
+        maven { url 'https://maven.aliyun.com/repository/grails-core' }
+        // proxy: https://repository.apache.org/snapshots/
+        maven { url 'https://maven.aliyun.com/repository/apache-snapshots' }
+        mavenCentral()
+        jcenter()
+        google()
     }
 
     dependencies {
-        classpath "com.tencent.shadow.core:gradle-plugin:$shadow_version"
+        classpath "com.xianlai.shadow.core:gradle-plugin:$shadow_version"
     }
 }
 

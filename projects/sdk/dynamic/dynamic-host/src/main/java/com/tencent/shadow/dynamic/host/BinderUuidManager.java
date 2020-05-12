@@ -30,12 +30,12 @@ class BinderUuidManager implements UuidManager {
         mRemote = remote;
     }
 
-    private void checkException(Parcel _reply) throws FailedException, NotFoundException {
-        int i = _reply.readInt();
+    private void checkException(Parcel reply) throws FailedException, NotFoundException {
+        int i = reply.readInt();
         if (i == UuidManager.TRANSACTION_CODE_FAILED_EXCEPTION) {
-            throw new FailedException(_reply);
+            throw new FailedException(reply);
         } else if (i == UuidManager.TRANSACTION_CODE_NOT_FOUND_EXCEPTION) {
-            throw new NotFoundException(_reply);
+            throw new NotFoundException(reply);
         } else if (i != UuidManager.TRANSACTION_CODE_NO_EXCEPTION) {
             throw new RuntimeException("不认识的Code==" + i);
         }
@@ -43,68 +43,68 @@ class BinderUuidManager implements UuidManager {
 
     @Override
     public InstalledApk getPlugin(String uuid, String partKey) throws android.os.RemoteException, FailedException, NotFoundException {
-        Parcel _data = Parcel.obtain();
-        Parcel _reply = Parcel.obtain();
-        InstalledApk _result;
+        Parcel data = Parcel.obtain();
+        Parcel reply = Parcel.obtain();
+        InstalledApk result;
         try {
-            _data.writeInterfaceToken(UuidManager.DESCRIPTOR);
-            _data.writeString(uuid);
-            _data.writeString(partKey);
-            mRemote.transact(UuidManager.TRANSACTION_getPlugin, _data, _reply, 0);
-            checkException(_reply);
-            if ((0 != _reply.readInt())) {
-                _result = InstalledApk.CREATOR.createFromParcel(_reply);
+            data.writeInterfaceToken(UuidManager.DESCRIPTOR);
+            data.writeString(uuid);
+            data.writeString(partKey);
+            mRemote.transact(UuidManager.TRANSACTION_getPlugin, data, reply, 0);
+            checkException(reply);
+            if ((0 != reply.readInt())) {
+                result = InstalledApk.CREATOR.createFromParcel(reply);
             } else {
-                _result = null;
+                result = null;
             }
         } finally {
-            _reply.recycle();
-            _data.recycle();
+            reply.recycle();
+            data.recycle();
         }
-        return _result;
+        return result;
     }
 
     @Override
     public InstalledApk getPluginLoader(String uuid) throws android.os.RemoteException, NotFoundException, FailedException {
-        Parcel _data = Parcel.obtain();
-        Parcel _reply = Parcel.obtain();
-        InstalledApk _result;
+        Parcel data = Parcel.obtain();
+        Parcel reply = Parcel.obtain();
+        InstalledApk result;
         try {
-            _data.writeInterfaceToken(UuidManager.DESCRIPTOR);
-            _data.writeString(uuid);
-            mRemote.transact(UuidManager.TRANSACTION_getPluginLoader, _data, _reply, 0);
-            checkException(_reply);
-            if ((0 != _reply.readInt())) {
-                _result = InstalledApk.CREATOR.createFromParcel(_reply);
+            data.writeInterfaceToken(UuidManager.DESCRIPTOR);
+            data.writeString(uuid);
+            mRemote.transact(UuidManager.TRANSACTION_getPluginLoader, data, reply, 0);
+            checkException(reply);
+            if ((0 != reply.readInt())) {
+                result = InstalledApk.CREATOR.createFromParcel(reply);
             } else {
-                _result = null;
+                result = null;
             }
         } finally {
-            _reply.recycle();
-            _data.recycle();
+            reply.recycle();
+            data.recycle();
         }
-        return _result;
+        return result;
     }
 
     @Override
     public InstalledApk getRuntime(String uuid) throws android.os.RemoteException, NotFoundException, FailedException {
-        Parcel _data = Parcel.obtain();
-        Parcel _reply = Parcel.obtain();
-        InstalledApk _result;
+        Parcel data = Parcel.obtain();
+        Parcel reply = Parcel.obtain();
+        InstalledApk result;
         try {
-            _data.writeInterfaceToken(UuidManager.DESCRIPTOR);
-            _data.writeString(uuid);
-            mRemote.transact(UuidManager.TRANSACTION_getRuntime, _data, _reply, 0);
-            checkException(_reply);
-            if ((0 != _reply.readInt())) {
-                _result = InstalledApk.CREATOR.createFromParcel(_reply);
+            data.writeInterfaceToken(UuidManager.DESCRIPTOR);
+            data.writeString(uuid);
+            mRemote.transact(UuidManager.TRANSACTION_getRuntime, data, reply, 0);
+            checkException(reply);
+            if ((0 != reply.readInt())) {
+                result = InstalledApk.CREATOR.createFromParcel(reply);
             } else {
-                _result = null;
+                result = null;
             }
         } finally {
-            _reply.recycle();
-            _data.recycle();
+            reply.recycle();
+            data.recycle();
         }
-        return _result;
+        return result;
     }
 }

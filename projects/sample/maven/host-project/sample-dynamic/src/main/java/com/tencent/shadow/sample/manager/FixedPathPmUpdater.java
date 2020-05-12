@@ -1,4 +1,4 @@
-package com.tencent.shadow.sample.introduce_shadow_lib;
+package com.tencent.shadow.sample.manager;
 
 import com.tencent.shadow.dynamic.host.PluginManagerUpdater;
 
@@ -7,6 +7,8 @@ import java.util.concurrent.Future;
 
 /**
  * 这个Updater没有任何升级能力。直接将指定路径作为其升级结果。
+ *
+ * @author admin
  */
 public class FixedPathPmUpdater implements PluginManagerUpdater {
 

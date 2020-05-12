@@ -74,12 +74,7 @@ object LoadApkBloc {
             }
         } else {
             val dependsOnClassLoaders = dependsOn.map {
-                val pluginParts = pluginPartsMap[it]
-                if (pluginParts == null) {
-                    throw LoadApkException("加载" + loadParameters.partKey + "时它的依赖" + it + "还没有加载")
-                } else {
-                    pluginParts.classLoader
-                }
+                pluginPartsMap[it]?.classLoader ?: throw LoadApkException("加载" + loadParameters.partKey + "时它的依赖" + it + "还没有加载")
             }.toTypedArray()
             val combineClassLoader = CombineClassLoader(dependsOnClassLoaders, hostParentClassLoader)
             return PluginClassLoader(

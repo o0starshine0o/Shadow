@@ -70,7 +70,7 @@ def gitShortRev() {
 }
 
 def setScm(scm) {
-    scm.appendNode('connection', 'https://github.com/Tencent/Shadow.git')
+    scm.appendNode('connection', "$CONNECTION")
 
     def commit
     if ("${System.env.ORANGE}".equalsIgnoreCase("true")) {
@@ -78,7 +78,7 @@ def setScm(scm) {
     } else {
         commit = gitShortRev()
     }
-    scm.appendNode('url', "https://github.com/Tencent/Shadow/commit/$commit")
+    scm.appendNode('url', "$COMMIT_URL$commit")
 }
 
 def setGeneratePomFileAndDepends(publicationName) {
@@ -103,10 +103,10 @@ def sourceJar(String name, String path) {
 }
 
 def publicationVersion = project.ARTIFACT_VERSION
-def coreGroupId = 'com.tencent.shadow.core'
-def corePath = 'projects/sdk/core'
-def dynamicGroupId = 'com.tencent.shadow.dynamic'
-def dynamicPath = 'projects/sdk/dynamic'
+def coreGroupId = CORE_GROUP_ID
+def corePath = CORE_PATH
+def dynamicGroupId = DYNAMIC_GROUP_ID
+def dynamicPath = DYNAMIC_PATH
 
 publishing {
     publications {

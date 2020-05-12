@@ -72,14 +72,9 @@ class PluginContentProviderManager() : UriConverter.UriParseDelegate {
         }
 
         providerAuthorityMap[pluginProviderInfo.authority] = containerProviderInfo.authority
-        var pluginProviderInfos: HashSet<PluginProviderInfo>? = null
-        if (pluginProviderInfoMap.containsKey(partKey)) {
-            pluginProviderInfos = pluginProviderInfoMap[partKey]
-        } else {
-            pluginProviderInfos = HashSet()
-        }
-        pluginProviderInfos?.add(pluginProviderInfo)
-        pluginProviderInfoMap.put(partKey, pluginProviderInfos)
+        val pluginProviderInfoSet = if (pluginProviderInfoMap.containsKey(partKey)) pluginProviderInfoMap[partKey] else HashSet()
+        pluginProviderInfoSet?.add(pluginProviderInfo)
+        pluginProviderInfoMap[partKey] = pluginProviderInfoSet
     }
 
     fun createContentProviderAndCallOnCreate(mContext: Context, partKey: String, pluginParts: PluginParts?) {

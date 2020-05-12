@@ -45,6 +45,7 @@ final class LoaderImplLoader extends ImplLoader {
                 loadWhiteList(installedApk),
                 1
         );
+        // 这是约定的类，不能更改名称和实现
         LoaderFactory loaderFactory = pluginLoaderClassLoader.getInterface(
                 LoaderFactory.class,
                 sLoaderFactoryImplClassName

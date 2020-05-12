@@ -63,6 +63,7 @@ public class MainActivity extends Activity {
         startPluginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // partKey 最后会在SamplePluginManager.getPluginProcessServiceName()中挑选具体哪一个注册的Service
                 String partKey = (String) partKeySpinner.getSelectedItem();
                 Intent intent = new Intent(MainActivity.this, PluginLoadActivity.class);
                 intent.putExtra(Constant.KEY_PLUGIN_PART_KEY, partKey);
@@ -72,7 +73,8 @@ public class MainActivity extends Activity {
                     case Constant.PART_KEY_PLUGIN_ANOTHER_APP:
                         intent.putExtra(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.sample.plugin.app.lib.gallery.splash.SplashActivity");
                         break;
-
+                    default:
+                        break;
                 }
                 startActivity(intent);
             }

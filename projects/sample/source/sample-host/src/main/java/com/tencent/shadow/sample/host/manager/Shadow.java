@@ -26,6 +26,7 @@ import java.io.File;
 public class Shadow {
 
     public static PluginManager getPluginManager(File apk){
+        // Manager的动态化实现（只有一个方法，具体实现由插件apk完成）：https://juejin.im/post/5d1b466f6fb9a07ed524b995#heading-1
         final FixedPathPmUpdater fixedPathPmUpdater = new FixedPathPmUpdater(apk);
         File tempPm = fixedPathPmUpdater.getLatest();
         if (tempPm != null) {

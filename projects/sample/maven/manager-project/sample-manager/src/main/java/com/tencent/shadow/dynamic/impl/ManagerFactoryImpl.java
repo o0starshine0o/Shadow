@@ -8,6 +8,8 @@ import com.tencent.shadow.sample.manager.SamplePluginManager;
 
 /**
  * 此类包名及类名固定
+ * 因为需要在ManagerImplLoader中（宿主apk），通过反射来构建这个类
+ * @author admin
  */
 public final class ManagerFactoryImpl implements ManagerFactory {
     @Override

@@ -143,9 +143,7 @@ abstract class ShadowPluginLoader(hostAppContext: Context) : DelegateProvider, D
     }
 
     @Throws(LoadPluginException::class)
-    open fun loadPlugin(
-            installedApk: InstalledApk
-    ): Future<*> {
+    open fun loadPlugin(installedApk: InstalledApk): Future<*> {
         val loadParameters = installedApk.getLoadParameters()
         if (mLogger.isInfoEnabled) {
             mLogger.info("start loadPlugin")

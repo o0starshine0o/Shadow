@@ -1,5 +1,8 @@
 package com.tencent.shadow.sample.manager;
 
+/**
+ * @author admin
+ */
 final public class Constant {
     public static final String KEY_PLUGIN_ZIP_PATH = "pluginZipPath";
     public static final String KEY_ACTIVITY_CLASSNAME = "KEY_ACTIVITY_CLASSNAME";

@@ -27,8 +27,9 @@ import dalvik.system.DexClassLoader;
 /**
  * Apk插件加载专用ClassLoader
  * <p>
- * 将宿主apk和插件apk隔离。但例外的是,插件可以从宿主apk中加载到约定的接口。
+ * 将宿主apk和插件apk隔离。但例外的是,插件可以从宿主apk中加载到约定的（就是在插件apk中白名单中的）接口。
  * 这样隔离的目的是让宿主apk中的类可以通过约定的接口使用插件apk中的实现。而插件中的类不会使用到和宿主同名的类。
+ * https://juejin.im/post/5d1b466f6fb9a07ed524b995#heading-1
  * <p>
  * 如果目标类符合构造时传入的包名,则从parent ClassLoader中查找,否则先从自己的dexPath中查找,如果找不到,则再从
  * parent的parent ClassLoader中查找。
@@ -99,6 +100,7 @@ class ApkClassLoader extends DexClassLoader {
 
     /**
      * 从apk中读取接口的实现
+     * https://juejin.im/post/5d1b466f6fb9a07ed524b995#heading-4
      *
      * @param clazz     接口类
      * @param className 实现类的类名

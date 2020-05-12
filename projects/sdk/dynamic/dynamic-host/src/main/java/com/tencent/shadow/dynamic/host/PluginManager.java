@@ -22,17 +22,21 @@ import android.content.Context;
 import android.os.Bundle;
 
 /**
+ * Manager的动态化
  * 使用方持有的接口
+ * 我们将接口打包在宿主中，接口就轻易不能更新了。但是它的实现总是可以更新的
  *
  * @author cubershi
  */
 public interface PluginManager {
 
     /**
-     * @param context context
-     * @param formId  标识本次请求的来源位置，用于区分入口
-     * @param bundle  参数列表
-     * @param callback 用于从PluginManager实现中返回View
+     * 这就是Manager的唯一方法，宿主中只会调用这个方法
+     *
+     * @param context 传入当前界面的Context以便打开下一个插件Activity
+     * @param formId  标识本次请求的来源位置，用于区分入口，用来让Manager的实现逻辑分辨这一次enter是从哪里来的
+     * @param bundle  将所有插件中可能用到的参数通过Bundle传给插件
+     * @param callback 用于从PluginManager实现中返回View，供Manager可以返回一个动态加载的View作为插件的Loading View
      */
     void enter(Context context, long formId, Bundle bundle, EnterCallback callback);
 }

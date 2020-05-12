@@ -92,7 +92,7 @@ abstract class ComponentManager : PluginComponentLauncher {
             }
         }
 
-        return Pair(false, service.component)
+        return Pair(false, service.component!!)
 
     }
 
@@ -205,11 +205,8 @@ abstract class ComponentManager : PluginComponentLauncher {
     }
 
     private fun Intent.isPluginComponent(): Boolean {
-        if (component == null) {
-            return false
-        }
-        val className = component.className ?: return false
-        return packageNameMap.containsKey(className)
+        if (component == null) return false
+        return packageNameMap.containsKey(component?.className ?: return false)
     }
 
     /**
@@ -228,7 +225,7 @@ abstract class ComponentManager : PluginComponentLauncher {
      * 调用前必须先调用isPluginComponent判断Intent确实一个插件内的组件
      */
     private fun Intent.toContainerIntent(bundleForPluginLoader: Bundle): Intent {
-        val className = component.className!!
+        val className = component?.className!!
         val packageName = packageNameMap[className]!!
         component = ComponentName(packageName, className)
         val containerComponent = componentMap[component]!!

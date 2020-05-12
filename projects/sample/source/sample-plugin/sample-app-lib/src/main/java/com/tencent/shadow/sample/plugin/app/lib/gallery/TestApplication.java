@@ -24,19 +24,19 @@ import com.tencent.shadow.sample.plugin.app.lib.gallery.cases.UseCaseManager;
 
 public class TestApplication extends Application {
 
-    private static TestApplication sInstence;
+    private static TestApplication sInstance;
 
     public boolean isOnCreate;
 
     @Override
     public void onCreate() {
-        sInstence = this;
+        sInstance = this;
         isOnCreate = true;
         super.onCreate();
         UseCaseManager.initCase();
     }
 
     public static TestApplication getInstance() {
-        return sInstence;
+        return sInstance;
     }
 }

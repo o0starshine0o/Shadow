@@ -30,14 +30,14 @@ internal class PluginPackageManagerImpl(private val hostPackageManager: PackageM
             if (packageInfo.applicationInfo.packageName == packageName) {
                 packageInfo.applicationInfo
             } else {
-                hostPackageManager.getApplicationInfo(packageName, flags)
+                hostPackageManager.getApplicationInfo(packageName ?: "", flags)
             }
 
     override fun getPackageInfo(packageName: String?, flags: Int): PackageInfo? =
             if (packageInfo.applicationInfo.packageName == packageName) {
                 packageInfo
             } else {
-                hostPackageManager.getPackageInfo(packageName, flags)
+                hostPackageManager.getPackageInfo(packageName ?: "", flags)
             }
 
     override fun getActivityInfo(component: ComponentName, flags: Int): ActivityInfo {
@@ -63,6 +63,6 @@ internal class PluginPackageManagerImpl(private val hostPackageManager: PackageM
             return pluginProviderInfo
         }
 
-        return hostPackageManager.resolveContentProvider(name, flags)
+        return hostPackageManager.resolveContentProvider(name ?: "", flags)
     }
 }

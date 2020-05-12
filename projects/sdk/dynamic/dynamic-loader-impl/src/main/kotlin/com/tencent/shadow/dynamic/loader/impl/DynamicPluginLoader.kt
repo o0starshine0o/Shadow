@@ -76,6 +76,10 @@ internal class DynamicPluginLoader(hostContext: Context, uuid: String) {
         mUuid = uuid;
     }
 
+    /**
+     * 在这里初始化PluginServiceManager
+     * 加载插件到ClassLoader中
+     */
     fun loadPlugin(partKey: String) {
         val installedApk = mUuidManager.getPlugin(mUuid, partKey)
         val future = mPluginLoader.loadPlugin(installedApk)
@@ -222,7 +226,7 @@ internal class DynamicPluginLoader(hostContext: Context, uuid: String) {
         try {
             val interfaceImplementClass = loadClass(className)
             val interfaceImplement = interfaceImplementClass.newInstance()
-            return clazz.cast(interfaceImplement)
+            return clazz.cast(interfaceImplement) ?: throw Exception()
         } catch (e: ClassNotFoundException) {
             throw Exception(e)
         } catch (e: InstantiationException) {

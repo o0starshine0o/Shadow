@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tencent.shadow.sample.introduce_shadow_lib">
+    package="com.tencent.shadow.sample.manager">
 
     <application>
         <service
-            android:name=".MainPluginProcessService"
+            android:name="com.tencent.shadow.sample.plugin.manager.MainPluginProcessService"
             android:process=":plugin" />
 
         <!--container 注册

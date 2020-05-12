@@ -1,6 +1,7 @@
-package com.tencent.shadow.sample.introduce_shadow_lib;
+package com.tencent.shadow.sample.manager;
 
 import android.util.Log;
+
 import com.tencent.shadow.core.common.ILoggerFactory;
 import com.tencent.shadow.core.common.Logger;
 
@@ -9,6 +10,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ * @author admin
+ */
 public class AndroidLoggerFactory implements ILoggerFactory {
 
     private static final int LOG_LEVEL_TRACE = 5;
@@ -16,6 +20,12 @@ public class AndroidLoggerFactory implements ILoggerFactory {
     private static final int LOG_LEVEL_INFO = 3;
     private static final int LOG_LEVEL_WARN = 2;
     private static final int LOG_LEVEL_ERROR = 1;
+
+    private AndroidLoggerFactory(){
+        if (sInstance!=null){
+            throw new IllegalStateException("单例不允许反射创建");
+        }
+    }
 
     private static AndroidLoggerFactory sInstance = new AndroidLoggerFactory();
 
@@ -25,21 +35,22 @@ public class AndroidLoggerFactory implements ILoggerFactory {
 
     final private ConcurrentMap<String, Logger> loggerMap = new ConcurrentHashMap<String, Logger>();
 
+    @Override
     public Logger getLogger(String name) {
         Logger simpleLogger = loggerMap.get(name);
         if (simpleLogger != null) {
             return simpleLogger;
         } else {
-            Logger newInstance = new IVLogger(name);
+            Logger newInstance = new IvLogger(name);
             Logger oldInstance = loggerMap.putIfAbsent(name, newInstance);
             return oldInstance == null ? newInstance : oldInstance;
         }
     }
 
-    class IVLogger implements Logger {
+    static class IvLogger implements Logger {
         private String name;
 
-        IVLogger(String name) {
+        IvLogger(String name) {
             this.name = name;
         }
 
@@ -54,28 +65,16 @@ public class AndroidLoggerFactory implements ILoggerFactory {
             switch (level) {
                 case LOG_LEVEL_TRACE:
                 case LOG_LEVEL_DEBUG:
-                    if (t == null)
-                        Log.d(tag, message);
-                    else
-                        Log.d(tag, message, t);
+                    Log.d(tag, message, t);
                     break;
                 case LOG_LEVEL_INFO:
-                    if (t == null)
-                        Log.i(tag, message);
-                    else
-                        Log.i(tag, message, t);
+                    Log.i(tag, message, t);
                     break;
                 case LOG_LEVEL_WARN:
-                    if (t == null)
-                        Log.w(tag, message);
-                    else
-                        Log.w(tag, message, t);
+                    Log.w(tag, message, t);
                     break;
                 case LOG_LEVEL_ERROR:
-                    if (t == null)
-                        Log.e(tag, message);
-                    else
-                        Log.e(tag, message, t);
+                    Log.e(tag, message, t);
                     break;
                 default:
                     break;
@@ -491,8 +490,9 @@ final class MessageFormatter {
             final int len = a.length;
             for (int i = 0; i < len; i++) {
                 deeplyAppendParameter(sbuf, a[i], seenMap);
-                if (i != len - 1)
+                if (i != len - 1) {
                     sbuf.append(", ");
+                }
             }
             // allow repeats in siblings
             seenMap.remove(a);
@@ -507,8 +507,9 @@ final class MessageFormatter {
         final int len = a.length;
         for (int i = 0; i < len; i++) {
             sbuf.append(a[i]);
-            if (i != len - 1)
+            if (i != len - 1) {
                 sbuf.append(", ");
+            }
         }
         sbuf.append(']');
     }
@@ -518,8 +519,9 @@ final class MessageFormatter {
         final int len = a.length;
         for (int i = 0; i < len; i++) {
             sbuf.append(a[i]);
-            if (i != len - 1)
+            if (i != len - 1) {
                 sbuf.append(", ");
+            }
         }
         sbuf.append(']');
     }
@@ -529,8 +531,9 @@ final class MessageFormatter {
         final int len = a.length;
         for (int i = 0; i < len; i++) {
             sbuf.append(a[i]);
-            if (i != len - 1)
+            if (i != len - 1) {
                 sbuf.append(", ");
+            }
         }
         sbuf.append(']');
     }
@@ -540,8 +543,9 @@ final class MessageFormatter {
         final int len = a.length;
         for (int i = 0; i < len; i++) {
             sbuf.append(a[i]);
-            if (i != len - 1)
+            if (i != len - 1) {
                 sbuf.append(", ");
+            }
         }
         sbuf.append(']');
     }
@@ -551,8 +555,9 @@ final class MessageFormatter {
         final int len = a.length;
         for (int i = 0; i < len; i++) {
             sbuf.append(a[i]);
-            if (i != len - 1)
+            if (i != len - 1) {
                 sbuf.append(", ");
+            }
         }
         sbuf.append(']');
     }
@@ -562,8 +567,9 @@ final class MessageFormatter {
         final int len = a.length;
         for (int i = 0; i < len; i++) {
             sbuf.append(a[i]);
-            if (i != len - 1)
+            if (i != len - 1) {
                 sbuf.append(", ");
+            }
         }
         sbuf.append(']');
     }
@@ -573,8 +579,9 @@ final class MessageFormatter {
         final int len = a.length;
         for (int i = 0; i < len; i++) {
             sbuf.append(a[i]);
-            if (i != len - 1)
+            if (i != len - 1) {
                 sbuf.append(", ");
+            }
         }
         sbuf.append(']');
     }
@@ -584,8 +591,9 @@ final class MessageFormatter {
         final int len = a.length;
         for (int i = 0; i < len; i++) {
             sbuf.append(a[i]);
-            if (i != len - 1)
+            if (i != len - 1) {
                 sbuf.append(", ");
+            }
         }
         sbuf.append(']');
     }

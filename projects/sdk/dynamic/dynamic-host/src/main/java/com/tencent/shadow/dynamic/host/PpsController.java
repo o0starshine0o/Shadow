@@ -29,58 +29,59 @@ public class PpsController {
     final private IBinder mRemote;
 
     PpsController(IBinder remote) {
+        // 这个remote是插件进程的IBinder，此时是作为服务端的存在
         mRemote = remote;
     }
 
     public void loadRuntime(String uuid) throws RemoteException, FailedException {
-        Parcel _data = Parcel.obtain();
-        Parcel _reply = Parcel.obtain();
+        Parcel data = Parcel.obtain();
+        Parcel reply = Parcel.obtain();
         try {
-            _data.writeInterfaceToken(PpsBinder.DESCRIPTOR);
-            _data.writeString(uuid);
-            mRemote.transact(PpsBinder.TRANSACTION_loadRuntime, _data, _reply, 0);
-            int i = _reply.readInt();
+            data.writeInterfaceToken(PpsBinder.DESCRIPTOR);
+            data.writeString(uuid);
+            mRemote.transact(PpsBinder.TRANSACTION_loadRuntime, data, reply, 0);
+            int i = reply.readInt();
             if (i == TRANSACTION_CODE_FAILED_EXCEPTION) {
-                throw new FailedException(_reply);
+                throw new FailedException(reply);
             } else if (i != TRANSACTION_CODE_NO_EXCEPTION) {
                 throw new RuntimeException("不认识的Code==" + i);
             }
         } finally {
-            _reply.recycle();
-            _data.recycle();
+            reply.recycle();
+            data.recycle();
         }
     }
 
     public void loadPluginLoader(String uuid) throws RemoteException, FailedException {
-        Parcel _data = Parcel.obtain();
-        Parcel _reply = Parcel.obtain();
+        Parcel data = Parcel.obtain();
+        Parcel reply = Parcel.obtain();
         try {
-            _data.writeInterfaceToken(PpsBinder.DESCRIPTOR);
-            _data.writeString(uuid);
-            mRemote.transact(PpsBinder.TRANSACTION_loadPluginLoader, _data, _reply, 0);
-            int i = _reply.readInt();
+            data.writeInterfaceToken(PpsBinder.DESCRIPTOR);
+            data.writeString(uuid);
+            mRemote.transact(PpsBinder.TRANSACTION_loadPluginLoader, data, reply, 0);
+            int i = reply.readInt();
             if (i == TRANSACTION_CODE_FAILED_EXCEPTION) {
-                throw new FailedException(_reply);
+                throw new FailedException(reply);
             } else if (i != TRANSACTION_CODE_NO_EXCEPTION) {
                 throw new RuntimeException("不认识的Code==" + i);
             }
         } finally {
-            _reply.recycle();
-            _data.recycle();
+            reply.recycle();
+            data.recycle();
         }
     }
 
     public void setUuidManager(IBinder uuidManagerBinder) throws RemoteException {
-        Parcel _data = Parcel.obtain();
-        Parcel _reply = Parcel.obtain();
+        Parcel data = Parcel.obtain();
+        Parcel reply = Parcel.obtain();
         try {
-            _data.writeInterfaceToken(PpsBinder.DESCRIPTOR);
-            _data.writeStrongBinder(uuidManagerBinder);
-            mRemote.transact(PpsBinder.TRANSACTION_setUuidManager, _data, _reply, 0);
-            _reply.readException();
+            data.writeInterfaceToken(PpsBinder.DESCRIPTOR);
+            data.writeStrongBinder(uuidManagerBinder);
+            mRemote.transact(PpsBinder.TRANSACTION_setUuidManager, data, reply, 0);
+            reply.readException();
         } finally {
-            _reply.recycle();
-            _data.recycle();
+            reply.recycle();
+            data.recycle();
         }
     }
 
@@ -114,18 +115,18 @@ public class PpsController {
     }
 
     public IBinder getPluginLoader() throws RemoteException {
-        Parcel _data = Parcel.obtain();
-        Parcel _reply = Parcel.obtain();
-        IBinder _result;
+        Parcel data = Parcel.obtain();
+        Parcel reply = Parcel.obtain();
+        IBinder result;
         try {
-            _data.writeInterfaceToken(PpsBinder.DESCRIPTOR);
-            mRemote.transact(PpsBinder.TRANSACTION_getPluginLoader, _data, _reply, 0);
-            _reply.readException();
-            _result = _reply.readStrongBinder();
+            data.writeInterfaceToken(PpsBinder.DESCRIPTOR);
+            mRemote.transact(PpsBinder.TRANSACTION_getPluginLoader, data, reply, 0);
+            reply.readException();
+            result = reply.readStrongBinder();
         } finally {
-            _reply.recycle();
-            _data.recycle();
+            reply.recycle();
+            data.recycle();
         }
-        return _result;
+        return result;
     }
 }

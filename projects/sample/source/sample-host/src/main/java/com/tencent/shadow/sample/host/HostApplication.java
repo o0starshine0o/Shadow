@@ -44,7 +44,6 @@ public class HostApplication extends Application {
     public void onCreate() {
         super.onCreate();
         sApp = this;
-
         detectNonSdkApiUsageOnAndroidP();
         setWebViewDataDirectorySuffix();
         LoggerFactory.setILoggerFactory(new AndroidLogLoggerFactory());
@@ -57,19 +56,22 @@ public class HostApplication extends Application {
         }
 
         PluginHelper.getInstance().init(this);
-
-        HostUiLayerProvider.init(this);
+        // 可以不需要的
+//        HostUiLayerProvider.init(this);
     }
     private static void setWebViewDataDirectorySuffix(){
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
             return;
         }
+        // 在多个进程中使用 WebView 的实例，必须先利用 WebView.setDataDirectorySuffix() 函数为每个进程指定唯一的数据目录后缀，然后再在该进程中使用 WebView 的给定实例
+        // https://blog.csdn.net/zhangcanyan/article/details/83820494
         WebView.setDataDirectorySuffix(Application.getProcessName());
     }
     private static void detectNonSdkApiUsageOnAndroidP() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
             return;
         }
+        // 用于检测是否使用了私有API
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         builder.detectNonSdkApiUsage();
         StrictMode.setVmPolicy(builder.build());

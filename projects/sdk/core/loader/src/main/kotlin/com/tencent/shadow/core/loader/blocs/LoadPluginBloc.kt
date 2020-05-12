@@ -65,7 +65,7 @@ object LoadPluginBloc {
                 val archiveFilePath = installedApk.apkFilePath
                 val packageManager = hostAppContext.packageManager
 
-                val packageArchiveInfo = packageManager.getPackageArchiveInfo(
+                @Suppress("DEPRECATION") val packageArchiveInfo = packageManager.getPackageArchiveInfo(
                         archiveFilePath,
                         PackageManager.GET_ACTIVITIES
                                 or PackageManager.GET_META_DATA
@@ -108,7 +108,7 @@ object LoadPluginBloc {
                 CreateResourceBloc.create(packageInfo, installedApk.apkFilePath, hostAppContext)
             })
 
-            val buildAppComponentFactory = executorService.submit(Callable {
+            val buildAppComponentFactory:Future<ShadowAppComponentFactory> = executorService.submit(Callable {
                 val pluginClassLoader = buildClassLoader.get()
                 val pluginInfo = buildPluginInfo.get()
                 if (pluginInfo.appComponentFactory != null) {
@@ -124,6 +124,7 @@ object LoadPluginBloc {
                 val packageInfo = getPackageInfo.get()
                 val appComponentFactory = buildAppComponentFactory.get()
 
+                // 创建Application
                 CreateApplicationBloc.createShadowApplication(
                         pluginClassLoader,
                         pluginInfo,
@@ -135,7 +136,8 @@ object LoadPluginBloc {
                 )
             })
 
-            val buildRunningPlugin = executorService.submit {
+            // buildRunningPlugin
+            return executorService.submit {
                 if (File(installedApk.apkFilePath).exists().not()) {
                     throw LoadPluginException("插件文件不存在.pluginFile==" + installedApk.apkFilePath)
                 }
@@ -159,8 +161,6 @@ object LoadPluginBloc {
                             pluginClassLoader, pluginPackageManager))
                 }
             }
-
-            return buildRunningPlugin
         }
     }
 

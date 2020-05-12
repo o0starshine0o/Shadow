@@ -65,7 +65,7 @@ class PluginServiceManager(private val mPluginLoader: ShadowPluginLoader, privat
 
 
     fun startPluginService(intent: Intent): ComponentName? {
-        val componentName = intent.component
+        val componentName = intent.component ?: return null
 
 
         // 检查所请求的service是否已经存在
@@ -83,7 +83,7 @@ class PluginServiceManager(private val mPluginLoader: ShadowPluginLoader, privat
     }
 
     fun stopPluginService(intent: Intent): Boolean {
-        val componentName = intent.component
+        val componentName = intent.component ?: return false
 
         if (mAliveServicesMap.containsKey(componentName)) {
             mServiceStopCalledMap.add(componentName)
@@ -98,7 +98,7 @@ class PluginServiceManager(private val mPluginLoader: ShadowPluginLoader, privat
     fun bindPluginService(intent: Intent, conn: ServiceConnection, flags: Int): Boolean {
         // todo #25 目前实现未处理flags,后续实现补上
 
-        val componentName = intent.component
+        val componentName = intent.component ?: return false
 
         // 1. 看要bind的service是否创建并在运行了
         if (!mAliveServicesMap.containsKey(componentName)) {
@@ -212,11 +212,7 @@ class PluginServiceManager(private val mPluginLoader: ShadowPluginLoader, privat
     }
 
 
-    private fun createServiceAndCallOnCreate(intent: Intent): ShadowService {
-        val service = newServiceInstance(intent)
-        service.onCreate()
-        return service
-    }
+    private fun createServiceAndCallOnCreate(intent: Intent) = newServiceInstance(intent).apply { onCreate() }
 
 
     private fun newServiceInstance(intent: Intent): ShadowService {
@@ -281,9 +277,9 @@ class PluginServiceManager(private val mPluginLoader: ShadowPluginLoader, privat
 
 private class TmpShadowDelegate : ShadowDelegate() {
 
-    fun getPluginApplication(): ShadowApplication = mPluginApplication
+    fun getPluginApplication() = mPluginApplication
     fun getAppComponentFactory() = mAppComponentFactory
-    fun getPluginClassLoader(): PluginClassLoader = mPluginClassLoader
-    fun getPluginResources(): Resources = mPluginResources
-    fun getComponentManager(): ComponentManager = mComponentManager
+    fun getPluginClassLoader() = mPluginClassLoader
+    fun getPluginResources() = mPluginResources
+    fun getComponentManager() = mComponentManager
 }

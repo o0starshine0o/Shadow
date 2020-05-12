@@ -45,8 +45,7 @@ object CreateApplicationBloc {
             appComponentFactory: ShadowAppComponentFactory
     ): ShadowApplication {
         try {
-            val appClassName = pluginInfo.applicationClassName
-                    ?: ShadowApplication::class.java.name
+            val appClassName = pluginInfo.applicationClassName ?: ShadowApplication::class.java.name
             val shadowApplication = appComponentFactory.instantiateApplication(pluginClassLoader, appClassName)
             val partKey = pluginInfo.partKey
             shadowApplication.setPluginResources(resources)

@@ -18,6 +18,7 @@
 
 package com.tencent.shadow.sample.manager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.RemoteException;
@@ -55,8 +56,11 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
         super(context);
     }
 
-
+    /**
+     * 从压缩包中解压插件，安装插件的runtime，loader，.so，更新数据库，返回最新的那一条数据
+     */
     public InstalledPlugin installPlugin(String zip, String hash , boolean odex) throws IOException, JSONException, InterruptedException, ExecutionException {
+        // 解压插件，包含loader.apk,runtime.apk,plugin.apk和config.json
         final PluginConfig pluginConfig = installPluginFromZip(new File(zip), hash);
         final String uuid = pluginConfig.UUID;
         List<Future> futures = new LinkedList<>();
@@ -64,6 +68,7 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
             Future odexRuntime = mFixedPool.submit(new Callable() {
                 @Override
                 public Object call() throws Exception {
+                    // 指定odex目录后创建DexClassLoader，其构造方法会最终调用DexPathList.makeDexElements加载dex文件，最终将odex路径赋值给RuntimeClassLoader，ApkClassLoader
                     oDexPluginLoaderOrRunTime(uuid, InstalledType.TYPE_PLUGIN_RUNTIME,
                             pluginConfig.runTime.file);
                     return null;
@@ -73,6 +78,7 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
             Future odexLoader = mFixedPool.submit(new Callable() {
                 @Override
                 public Object call() throws Exception {
+                    // 指定odex目录后创建DexClassLoader，其构造方法会最终调用DexPathList.makeDexElements加载dex文件，最终将odex路径赋值给RuntimeClassLoader，ApkClassLoader
                     oDexPluginLoaderOrRunTime(uuid, InstalledType.TYPE_PLUGIN_LOADER,
                             pluginConfig.pluginLoader.file);
                     return null;
@@ -86,6 +92,7 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
             Future extractSo = mFixedPool.submit(new Callable() {
                 @Override
                 public Object call() throws Exception {
+                    // 将插件依赖的so文件复制到 "lib/" 目录下，更新数据库关于so的path
                     extractSo(uuid, partKey, apkFile);
                     return null;
                 }
@@ -112,28 +119,30 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
     }
 
 
-    public void startPluginActivity( InstalledPlugin installedPlugin, String partKey, Intent pluginIntent) throws RemoteException, TimeoutException, FailedException {
+    @SuppressLint("WrongConstant")
+    public void startPluginActivity(InstalledPlugin installedPlugin, String partKey, Intent pluginIntent) throws RemoteException, TimeoutException, FailedException {
         Intent intent = convertActivityIntent(installedPlugin, partKey, pluginIntent);
+        // 首先会查找是否存在和被启动的Activity具有相同的亲和性的任务栈,同一个应用程序中的activity的亲和性一样
+        // 如果有，就直接把这个栈（包含目标activity）整体移动到前台，并保持栈中的状态不变，即栈中的activity顺序不变，(这一步可能展示给用户的activity不是intent里面的)
+        // 如果没有，则新建一个栈来存放被启动的activity
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mPluginLoader.startActivityInPluginProcess(intent);
-
     }
 
     public Intent convertActivityIntent(InstalledPlugin installedPlugin, String partKey, Intent pluginIntent) throws RemoteException, TimeoutException, FailedException {
         loadPlugin(installedPlugin.UUID, partKey);
-        Map map = mPluginLoader.getLoadedPlugin();
-        Boolean isCall = (Boolean) map.get(partKey);
-        if (isCall == null || !isCall) {
-            mPluginLoader.callApplicationOnCreate(partKey);
-        }
         return mPluginLoader.convertActivityIntent(pluginIntent);
     }
 
     private void loadPluginLoaderAndRuntime(String uuid, String partKey) throws RemoteException, TimeoutException, FailedException {
+        // 首次出现了PPS，插件进程PluginProcessService的接口，https://juejin.im/post/5d1968545188255543342406
         if (mPpsController == null) {
+            // 绑定PPS，拿到插件进程的IBinder，包装成PPSController
             bindPluginProcessService(getPluginProcessServiceName(partKey));
             waitServiceConnected(10, TimeUnit.SECONDS);
         }
+        // 在插件进程内使用MUUIDManager（从宿主传递进来的binder）反过来调用宿主进程的PluginManagerThatUseDynamicLoader.getRunTime，构造一个InstalledApk返回给PPS
+        // 根据InstalledApk内的path信息，将RuntimeClassLoader（这个就是下面说的DexClassLoader）插入到BootClassLoader与PathClassLoader之间
         loadRunTime(uuid);
         loadPluginLoader(uuid);
     }
@@ -144,9 +153,19 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
         if (!map.containsKey(partKey)) {
             mPluginLoader.loadPlugin(partKey);
         }
+        Boolean isCall = (Boolean) map.get(partKey);
+        if (isCall == null || !isCall) {
+            mPluginLoader.callApplicationOnCreate(partKey);
+        }
     }
 
 
+    /**
+     * 由具体的Manager提供名称，这个名称需要在宿主中进行注册
+     *
+     * @param partKey 在demo中由宿主进行选择
+     * @return 在宿主中注册过的Service名称（全名）
+     */
     protected abstract String getPluginProcessServiceName(String partKey);
 
 }

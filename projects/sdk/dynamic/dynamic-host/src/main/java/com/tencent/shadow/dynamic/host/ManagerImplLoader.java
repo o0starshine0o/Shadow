@@ -25,7 +25,14 @@ import com.tencent.shadow.core.common.InstalledApk;
 import java.io.File;
 
 final class ManagerImplLoader extends ImplLoader {
+    /**
+     * 这个类在所有的插件中都需要固定包名和类名，并且要实现ManagerFactory接口，返回对应的Manager
+     * 注意，这个类实现的所有接口，都会被ApkClassLoader移花接木
+     */
     private static final String MANAGER_FACTORY_CLASS_NAME = "com.tencent.shadow.dynamic.impl.ManagerFactoryImpl";
+    /**
+     * 这些位于宿主中的类也将会出现在白名单中，插件apk可以直接使用
+     */
     private static final String[] REMOTE_PLUGIN_MANAGER_INTERFACES = new String[]
             {
                     "com.tencent.shadow.core.common",
@@ -56,6 +63,9 @@ final class ManagerImplLoader extends ImplLoader {
                 apkClassLoader
         );
 
+        // 使用builder的原因（在编译期跟实现类的构造器关联起来）：https://juejin.im/post/5d1b466f6fb9a07ed524b995#heading-4
+        // 主要是想要加载插件apk中的com.tencent.shadow.dynamic.impl.ManagerFactoryImpl这个类
+        // 由插件中的ManagerFactoryImpl这个类来构建PluginManagerImpl
         try {
             ManagerFactory managerFactory = apkClassLoader.getInterface(
                     ManagerFactory.class,

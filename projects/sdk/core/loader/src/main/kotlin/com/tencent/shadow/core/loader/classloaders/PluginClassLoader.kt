@@ -87,7 +87,7 @@ class PluginClassLoader(
                         clazz = specialClassLoader.loadClass(className)!!
                     } catch (e: ClassNotFoundException) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                            e.addSuppressed(suppressed)
+                            suppressed?.apply { e.addSuppressed(this) }
                         }
                         throw e
                     }

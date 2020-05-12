@@ -54,7 +54,10 @@ public class DynamicRuntime {
      * @return true 加载了新的runtime
      */
     public static boolean loadRuntime(InstalledApk installedRuntimeApk) {
+        // 位于插件进程内
         ClassLoader contextClassLoader = DynamicRuntime.class.getClassLoader();
+        assert contextClassLoader != null;
+        // 拿到插件的RuntimeClassLoader
         RuntimeClassLoader runtimeClassLoader = getRuntimeClassLoader();
         if (runtimeClassLoader != null) {
             String apkPath = runtimeClassLoader.apkPath;
@@ -79,7 +82,7 @@ public class DynamicRuntime {
                 }
             }
         }
-        //正常处理，将runtime 挂到pathclassLoader之上
+        //正常处理，将runtime 挂到pathClassLoader之上
         try {
             hackParentToRuntime(installedRuntimeApk, contextClassLoader);
         } catch (Exception e) {
@@ -106,6 +109,7 @@ public class DynamicRuntime {
 
     private static RuntimeClassLoader getRuntimeClassLoader() {
         ClassLoader contextClassLoader = DynamicRuntime.class.getClassLoader();
+        assert contextClassLoader != null;
         ClassLoader tmpClassLoader = contextClassLoader.getParent();
         while (tmpClassLoader != null) {
             if (tmpClassLoader instanceof RuntimeClassLoader) {
@@ -131,8 +135,7 @@ public class DynamicRuntime {
      * @param newParentClassLoader classLoader的新的parent
      * @throws Exception 失败时抛出
      */
-    static void hackParentClassLoader(ClassLoader classLoader,
-                                              ClassLoader newParentClassLoader) throws Exception {
+    static void hackParentClassLoader(ClassLoader classLoader, ClassLoader newParentClassLoader) throws Exception {
         Field field = getParentField();
         if (field == null) {
             throw new RuntimeException("在ClassLoader.class中没找到类型为ClassLoader的parent域");
@@ -148,6 +151,7 @@ public class DynamicRuntime {
      */
     private static Field getParentField() {
         ClassLoader classLoader = DynamicRuntime.class.getClassLoader();
+        assert classLoader != null;
         ClassLoader parent = classLoader.getParent();
         Field field = null;
         for (Field f : ClassLoader.class.getDeclaredFields()) {

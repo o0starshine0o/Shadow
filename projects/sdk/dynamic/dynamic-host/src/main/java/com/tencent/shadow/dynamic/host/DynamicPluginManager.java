@@ -29,6 +29,7 @@ import java.io.File;
 public final class DynamicPluginManager implements PluginManager {
 
     final private PluginManagerUpdater mUpdater;
+    // 典型的代理模式
     private PluginManagerImpl mManagerImpl;
     private long mLastModified;
     private static final Logger mLogger = LoggerFactory.getLogger(DynamicPluginManager.class);
@@ -61,6 +62,10 @@ public final class DynamicPluginManager implements PluginManager {
         }
     }
 
+    /**
+     * 更新插件的实现
+     * 比对上次更新时间，若不相等，则以最新文件进行更新
+     */
     private void updateManagerImpl(Context context) {
         File latestManagerImplApk = mUpdater.getLatest();
         long lastModified = latestManagerImplApk.lastModified();
@@ -68,8 +73,11 @@ public final class DynamicPluginManager implements PluginManager {
             mLogger.info("mLastModified != lastModified : " + (mLastModified != lastModified));
         }
         if (mLastModified != lastModified) {
+            // loader保存了apk和odex的目录
             ManagerImplLoader implLoader = new ManagerImplLoader(context, latestManagerImplApk);
+            // 创建ClassLoader（含白名单），代理Context
             PluginManagerImpl newImpl = implLoader.load();
+            // 执行老控件的保存和销毁，新控件的创建
             Bundle state;
             if (mManagerImpl != null) {
                 state = new Bundle();

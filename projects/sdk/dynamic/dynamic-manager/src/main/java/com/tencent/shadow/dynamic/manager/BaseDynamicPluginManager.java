@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Parcel;
-import android.os.RemoteException;
 
 import com.tencent.shadow.core.common.InstalledApk;
 import com.tencent.shadow.core.common.Logger;
@@ -64,6 +63,7 @@ abstract public class BaseDynamicPluginManager extends BasePluginManager impleme
 
         mServiceConnecting.set(true);
 
+        // 这是CountDownLatch表示启动进程的线程运行完成
         final CountDownLatch startBindingLatch = new CountDownLatch(1);
         final boolean[] asyncResult = new boolean[1];
         mUiHandler.post(new Runnable() {
@@ -170,6 +170,7 @@ abstract public class BaseDynamicPluginManager extends BasePluginManager impleme
         }
     }
 
+    @Override
     public InstalledApk getPlugin(String uuid, String partKey) throws FailedException, NotFoundException {
         try {
             InstalledPlugin.Part part;
@@ -203,7 +204,7 @@ abstract public class BaseDynamicPluginManager extends BasePluginManager impleme
         }
     }
 
-    private InstalledApk getInstalledPL(String uuid, int type) throws FailedException, NotFoundException {
+    private InstalledApk getInstalledPl(String uuid, int type) throws FailedException, NotFoundException {
         try {
             InstalledPlugin.Part part;
             try {
@@ -222,11 +223,13 @@ abstract public class BaseDynamicPluginManager extends BasePluginManager impleme
         }
     }
 
+    @Override
     public InstalledApk getPluginLoader(String uuid) throws FailedException, NotFoundException {
-        return getInstalledPL(uuid, InstalledType.TYPE_PLUGIN_LOADER);
+        return getInstalledPl(uuid, InstalledType.TYPE_PLUGIN_LOADER);
     }
 
+    @Override
     public InstalledApk getRuntime(String uuid) throws FailedException, NotFoundException {
-        return getInstalledPL(uuid, InstalledType.TYPE_PLUGIN_RUNTIME);
+        return getInstalledPl(uuid, InstalledType.TYPE_PLUGIN_RUNTIME);
     }
 }

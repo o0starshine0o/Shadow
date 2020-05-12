@@ -51,10 +51,9 @@ class PpsBinder extends android.os.Binder {
             }
             case TRANSACTION_loadRuntime: {
                 data.enforceInterface(DESCRIPTOR);
-                String _arg0;
-                _arg0 = data.readString();
+                String arg0 = data.readString();
                 try {
-                    mPps.loadRuntime(_arg0);
+                    mPps.loadRuntime(arg0);
                     reply.writeInt(TRANSACTION_CODE_NO_EXCEPTION);
                 } catch (FailedException e) {
                     reply.writeInt(TRANSACTION_CODE_FAILED_EXCEPTION);
@@ -64,10 +63,9 @@ class PpsBinder extends android.os.Binder {
             }
             case TRANSACTION_loadPluginLoader: {
                 data.enforceInterface(DESCRIPTOR);
-                String _arg0;
-                _arg0 = data.readString();
+                String arg0 = data.readString();
                 try {
-                    mPps.loadPluginLoader(_arg0);
+                    mPps.loadPluginLoader(arg0);
                     reply.writeInt(TRANSACTION_CODE_NO_EXCEPTION);
                 } catch (FailedException e) {
                     reply.writeInt(TRANSACTION_CODE_FAILED_EXCEPTION);
@@ -75,6 +73,9 @@ class PpsBinder extends android.os.Binder {
                 }
                 return true;
             }
+            // 当插件apk的进程被创建出来以后，第一步就是调用这个方法
+            // 宿主进程把自己的PluginManager作为Binder交给了插件进程
+            // 插件进程直接保存了这个PluginManager
             case TRANSACTION_setUuidManager: {
                 data.enforceInterface(DESCRIPTOR);
                 IBinder iBinder = data.readStrongBinder();

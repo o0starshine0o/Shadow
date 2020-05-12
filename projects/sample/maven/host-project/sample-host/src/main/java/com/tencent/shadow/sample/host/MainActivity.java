@@ -1,5 +1,6 @@
 package com.tencent.shadow.sample.host;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,13 +10,17 @@ import android.widget.TextView;
 
 import com.tencent.shadow.dynamic.host.EnterCallback;
 import com.tencent.shadow.dynamic.host.PluginManager;
-import com.tencent.shadow.sample.introduce_shadow_lib.InitApplication;
+import com.tencent.shadow.sample.manager.PluginManagerDelegate;
 
+/**
+ * @author admin
+ */
 public class MainActivity extends Activity {
 
     public static final int FROM_ID_START_ACTIVITY = 1001;
     public static final int FROM_ID_CALL_SERVICE = 1002;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +38,7 @@ public class MainActivity extends Activity {
             public void onClick(final View v) {
                 v.setEnabled(false);//防止点击重入
 
-                PluginManager pluginManager = InitApplication.getPluginManager();
+                PluginManager pluginManager = PluginManagerDelegate.getPluginManager();
                 pluginManager.enter(MainActivity.this, FROM_ID_START_ACTIVITY, new Bundle(), new EnterCallback() {
                     @Override
                     public void onShowLoadingView(View view) {
@@ -63,7 +68,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 v.setEnabled(false);//防止点击重入
 
-                PluginManager pluginManager = InitApplication.getPluginManager();
+                PluginManager pluginManager = PluginManagerDelegate.getPluginManager();
                 pluginManager.enter(MainActivity.this, FROM_ID_CALL_SERVICE, null, null);
             }
         });

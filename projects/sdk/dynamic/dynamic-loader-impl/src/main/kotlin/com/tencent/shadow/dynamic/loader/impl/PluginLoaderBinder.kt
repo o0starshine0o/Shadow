@@ -62,8 +62,8 @@ internal class PluginLoaderBinder(private val mDynamicPluginLoader: DynamicPlugi
                 val arg0 = if (0 != data.readInt()) Intent.CREATOR.createFromParcel(data) else return false
                 val result = mDynamicPluginLoader.convertActivityIntent(arg0)
                 reply?.writeNoException()
-                result?.writeToParcel(reply, android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE)
                 reply?.writeInt(if (result != null) 1 else 0)
+                result?.writeToParcel(reply, android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE)
                 return true
             }
             PluginLoader.TRANSACTION_startPluginService -> {
@@ -71,8 +71,8 @@ internal class PluginLoaderBinder(private val mDynamicPluginLoader: DynamicPlugi
                 val arg0 = if (0 != data.readInt()) Intent.CREATOR.createFromParcel(data) else return false
                 val result = mDynamicPluginLoader.startPluginService(arg0)
                 reply?.writeNoException()
-                result?.writeToParcel(reply, android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE)
                 reply?.writeInt(if (result != null) 1 else 0)
+                result?.writeToParcel(reply, android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE)
                 return true
             }
             PluginLoader.TRANSACTION_stopPluginService -> {

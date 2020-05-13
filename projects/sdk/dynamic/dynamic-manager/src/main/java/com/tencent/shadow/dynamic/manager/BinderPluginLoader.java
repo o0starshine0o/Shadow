@@ -91,7 +91,7 @@ class BinderPluginLoader implements PluginLoader {
         Intent result;
         try {
             data.writeInterfaceToken(DESCRIPTOR);
-            if ((pluginActivityIntent != null)) {
+            if (pluginActivityIntent != null) {
                 data.writeInt(1);
                 pluginActivityIntent.writeToParcel(data, 0);
             } else {
@@ -99,7 +99,7 @@ class BinderPluginLoader implements PluginLoader {
             }
             mRemote.transact(TRANSACTION_convertActivityIntent, data, reply, 0);
             reply.readException();
-            if ((0 != reply.readInt())) {
+            if (0 != reply.readInt()) {
                 result = Intent.CREATOR.createFromParcel(reply);
             } else {
                 result = null;

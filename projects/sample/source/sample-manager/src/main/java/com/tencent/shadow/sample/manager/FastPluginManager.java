@@ -131,6 +131,7 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
 
     public Intent convertActivityIntent(InstalledPlugin installedPlugin, String partKey, Intent pluginIntent) throws RemoteException, TimeoutException, FailedException {
         loadPlugin(installedPlugin.UUID, partKey);
+        // BinderPluginLoader
         return mPluginLoader.convertActivityIntent(pluginIntent);
     }
 

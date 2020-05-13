@@ -39,4 +39,15 @@ public interface PluginManager {
      * @param callback 用于从PluginManager实现中返回View，供Manager可以返回一个动态加载的View作为插件的Loading View
      */
     void enter(Context context, long formId, Bundle bundle, EnterCallback callback);
+
+
+    /**
+     * 宿主通过这个方法，获取插件app中的类
+     *
+     * @param context 传入当前界面的Context以便打开下一个插件Activity
+     * @param clazz  标识本次请求的来源位置，用于区分入口，用来让Manager的实现逻辑分辨这一次enter是从哪里来的
+     * @param name  将所有插件中可能用到的参数通过Bundle传给插件
+     * @return 具体的实例
+     */
+    <T> T getPluginClass(Context context, Class<T> clazz, String name);
 }

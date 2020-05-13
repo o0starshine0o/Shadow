@@ -80,6 +80,11 @@ public class ServiceTestDynamicPluginManager extends FastPluginManager {
         }
     }
 
+    @Override
+    public <T> T getPluginClass(Context context, Class<T> aClass, String s) {
+        return null;
+    }
+
     private void doCase(Intent pluginIntent) throws InterruptedException {
         String className = pluginIntent.getComponent().getClassName();
         switch (className) {

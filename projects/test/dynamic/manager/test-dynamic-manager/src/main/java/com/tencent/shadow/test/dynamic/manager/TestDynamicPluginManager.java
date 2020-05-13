@@ -41,4 +41,9 @@ final public class TestDynamicPluginManager implements PluginManagerImpl {
             activityPluginManager.enter(context, fromId, bundle, callback);
         }
     }
+
+    @Override
+    public <T> T getPluginClass(Context context, Class<T> aClass, String s) {
+        return null;
+    }
 }

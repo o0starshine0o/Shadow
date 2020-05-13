@@ -52,6 +52,13 @@ public final class DynamicPluginManager implements PluginManager {
         mUpdater.update();
     }
 
+    @Override
+    public <T> T getPluginClass(Context context, Class<T> clazz, String name) {
+        updateManagerImpl(context);
+        mUpdater.update();
+        return mManagerImpl.getPluginClass(context, clazz, name);
+    }
+
     public void release() {
         if (mLogger.isInfoEnabled()) {
             mLogger.info("release");

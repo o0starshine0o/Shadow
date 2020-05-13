@@ -85,6 +85,11 @@ public class SamplePluginManager extends FastPluginManager {
         }
     }
 
+    @Override
+    public <T> T getPluginClass(Context context, Class<T> aClass, String s) {
+        return null;
+    }
+
     private void onStartActivity(final Context context, Bundle bundle, final EnterCallback callback) {
         final String pluginZipPath = bundle.getString(Constant.KEY_PLUGIN_ZIP_PATH);
         final String partKey = bundle.getString(Constant.KEY_PLUGIN_PART_KEY);

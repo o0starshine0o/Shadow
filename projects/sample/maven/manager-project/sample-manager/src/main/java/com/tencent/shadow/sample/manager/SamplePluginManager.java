@@ -22,7 +22,6 @@ import java.util.concurrent.Executors;
  * @author admin
  */
 public class SamplePluginManager extends FastPluginManager {
-
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     private Context mCurrentContext;
@@ -114,6 +113,9 @@ public class SamplePluginManager extends FastPluginManager {
         });
     }
 
+    /**
+     * 演示了如何启动插件的Service
+     */
     private void callPluginService(final Context context) {
         final String pluginZipPath = "/data/local/tmp/plugin-debug.zip";
         final String partKey = "sample-plugin";
@@ -137,6 +139,7 @@ public class SamplePluginManager extends FastPluginManager {
                     boolean callSuccess = mPluginLoader.bindPluginService(pluginIntent, new PluginServiceConnection() {
                         @Override
                         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                            // 插件的IBinder实现了IMyAidlInterface接口
                             IMyAidlInterface iMyAidlInterface = IMyAidlInterface.Stub.asInterface(iBinder);
                             try {
                                 String s = iMyAidlInterface.basicTypes(1, 2, true, 4.0f, 5.0, "6");

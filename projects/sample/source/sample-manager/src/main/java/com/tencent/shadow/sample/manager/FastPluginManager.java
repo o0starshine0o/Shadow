@@ -139,17 +139,27 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
         // 首次出现了PPS，插件进程PluginProcessService的接口，https://juejin.im/post/5d1968545188255543342406
         if (mPpsController == null) {
             // 绑定PPS，拿到插件进程的IBinder，包装成PPSController
+            // 注意，这个IBinder和之后loadPluginLoader的IBinder不一样
+            // 这个IBinder是控制进程Service的
             bindPluginProcessService(getPluginProcessServiceName(partKey));
             waitServiceConnected(10, TimeUnit.SECONDS);
         }
         // 在插件进程内使用MUUIDManager（从宿主传递进来的binder）反过来调用宿主进程的PluginManagerThatUseDynamicLoader.getRunTime，构造一个InstalledApk返回给PPS
         // 根据InstalledApk内的path信息，将RuntimeClassLoader（这个就是下面说的DexClassLoader）插入到BootClassLoader与PathClassLoader之间
         loadRunTime(uuid);
+        // 通过PpsController，在插件进程中（PluginProcessService），用反射的方式构建（LoaderImplLoader类中）出LoaderFactoryImpl
+        // 在LoaderFactoryImpl中使用buildLoader方法构建出PluginLoaderBinder（注意，这个Binder不是PPSBinder了）
+        // 在构建PluginLoaderBinder过程中，构建了一个DynamicPluginLoader类
+        // 在DynamicPluginLoader的构造方法中用反射的方式构建出了CoreLoaderFactoryImpl
+        // 在CoreLoaderFactoryImpl中使用build方法，构建出SamplePluginLoader（这个才是插件真正的Loader，同时也是IBinder）
+        // 最后SamplePluginLoader通过IBinder传输被封装成BinderPluginLoader（mPluginLoader），在宿主进程中，供manager管理
         loadPluginLoader(uuid);
     }
 
     public void loadPlugin(String uuid, String partKey) throws RemoteException, TimeoutException, FailedException {
+        // 到此为止，mPluginLoader还木有
         loadPluginLoaderAndRuntime(uuid, partKey);
+        // 到这mPluginLoader就已经完成初始化了
         Map map = mPluginLoader.getLoadedPlugin();
         if (!map.containsKey(partKey)) {
             mPluginLoader.loadPlugin(partKey);

@@ -5,6 +5,11 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 
+/**
+ * @author admin
+ *
+ * 主要是作为和其他插件通信的存在
+ */
 public class MyService extends Service {
     public MyService() {
     }
@@ -13,7 +18,7 @@ public class MyService extends Service {
     public IBinder onBind(Intent intent) {
         return new IMyAidlInterface.Stub() {
             @Override
-            public String basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString) throws RemoteException {
+            public String basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString) {
                 return Integer.toString(anInt) + aLong + aBoolean + aFloat + aDouble + aString;
             }
         };

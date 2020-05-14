@@ -8,6 +8,9 @@ import com.tencent.shadow.core.loader.managers.ComponentManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author admin
+ */
 public class SampleComponentManager extends ComponentManager {
 
     /**

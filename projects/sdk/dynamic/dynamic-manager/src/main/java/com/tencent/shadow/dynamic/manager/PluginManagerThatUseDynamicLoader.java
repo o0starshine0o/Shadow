@@ -76,7 +76,7 @@ public abstract class PluginManagerThatUseDynamicLoader extends BaseDynamicPlugi
         }
 
         try {
-            // 这里要进行跨进程的通信了
+            // 这里要进行跨进程的通信了，第一次的话，基本为空，因为还木有loadPluginLoader操作
             IBinder iBinder = mPpsController.getPluginLoader();
             if (iBinder != null) {
                 mPluginLoader = new BinderPluginLoader(iBinder);

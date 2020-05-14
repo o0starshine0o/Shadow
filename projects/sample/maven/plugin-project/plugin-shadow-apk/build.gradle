@@ -45,6 +45,8 @@ buildscript {
 apply plugin: 'com.tencent.shadow.plugin'
 
 shadow {
+    // com.tencent.shadow.core.gradle.extensions.PackagePluginExtension#toJson
+    // com.tencent.shadow.core.gradle.CreatePackagePluginTaskKt#createPackagePluginTask
     packagePlugin {
         pluginTypes {
             debug {
@@ -80,8 +82,23 @@ shadow {
 
         runtimeApkProjectPath = 'sample-runtime'
 
+        // 该config.json文件采用的格式版本
         version = 4
+        // 当前config.json文件跟哪些格式的旧版本是兼容的，可以被支持旧版本格式的Manager使用
         compactVersion = [1, 2, 3]
+        // UUID表示的是插件包内容的版本，只有相同UUID的apk才能一同工作
+        // apk有3中类型：Loader、Runtime、Plugin。所以在同一个config.json中描述的的所有apk都具有相同的UUID，所以能一同工作
+        // UUID是要按照一般UUID生成算法生成的，以保证多次发布的插件版本不会重复
+        // 一般业务使用的版本名，对插件更新逻辑没有实际作用
         uuidNickName = "1.1.5"
+        // 需要注意的是，多个config.json是可以采用同一个UUID的。
+        // 因为我们有时需要分段下载插件包，下载一部分先启动一部分。所以可以将插件apk分到多个config.json中，采用相同的UUID。
+        // 并且，Loader和Runtime只需要存在于其中一个插件包中就可以了
+
+        // Loader、Runtime和Plugin的描述都有两个基本信息：apkName和hash。
+        // 这个设计是为了便于未来实现即使UUID不同的config.json中也可能存在相同hash，没有发生变化的插件。
+        // 那么根据hash相同，则可以决定跨UUID复用本地已经存在的插件了
+
+        // 如果要复用之前UUID，可以在插件包生成的build目录放一个uuid.txt文件，将UUID指定在里面
     }
 }

@@ -38,8 +38,8 @@ internal class PluginLoaderBinder(private val mDynamicPluginLoader: DynamicPlugi
             }
             PluginLoader.TRANSACTION_loadPlugin -> {
                 data.enforceInterface(PluginLoader.DESCRIPTOR)
-                val arg0 = data.readString() ?: return false
-                mDynamicPluginLoader.loadPlugin(arg0)
+                val partKey = data.readString() ?: return false
+                mDynamicPluginLoader.loadPlugin(partKey)
                 reply?.writeNoException()
                 return true
             }
@@ -52,8 +52,8 @@ internal class PluginLoaderBinder(private val mDynamicPluginLoader: DynamicPlugi
             }
             PluginLoader.TRANSACTION_callApplicationOnCreate -> {
                 data.enforceInterface(PluginLoader.DESCRIPTOR)
-                val arg0 = data.readString() ?: return false
-                mDynamicPluginLoader.callApplicationOnCreate(arg0)
+                val partKey = data.readString() ?: return false
+                mDynamicPluginLoader.callApplicationOnCreate(partKey)
                 reply?.writeNoException()
                 return true
             }

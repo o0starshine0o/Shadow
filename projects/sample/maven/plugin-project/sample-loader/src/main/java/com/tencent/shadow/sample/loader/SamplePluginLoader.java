@@ -7,8 +7,7 @@ import com.tencent.shadow.core.loader.managers.ComponentManager;
 import com.tencent.shadow.sample.loader.SampleComponentManager;
 
 /**
- * 这里的类名和包名需要固定
- * com.tencent.shadow.sdk.pluginloader.PluginLoaderImpl
+ * 主要是返回一个ComponentManager实例
  */
 public class SamplePluginLoader extends ShadowPluginLoader {
 

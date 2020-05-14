@@ -21,6 +21,8 @@ package com.tencent.shadow.core.common;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.File;
+
 /**
  * 安装完成的apk
  */
@@ -33,6 +35,10 @@ public class InstalledApk implements Parcelable {
     public final String libraryPath;
 
     public final byte[] parcelExtras;
+
+    public InstalledApk(File apkFile, File oDex, File library) {
+        this(apkFile.getAbsolutePath(), oDex.getAbsolutePath(), library.getAbsolutePath(), null);
+    }
 
     public InstalledApk(String apkFilePath, String oDexPath, String libraryPath) {
         this(apkFilePath, oDexPath, libraryPath, null);

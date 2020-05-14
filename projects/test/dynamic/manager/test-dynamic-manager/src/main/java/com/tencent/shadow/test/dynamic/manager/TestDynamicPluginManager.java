@@ -43,7 +43,7 @@ final public class TestDynamicPluginManager implements PluginManagerImpl {
     }
 
     @Override
-    public <T> T getPluginClass(Context context, Class<T> aClass, String s) {
+    public <T> T getPluginClass(Context context, String s, String s1, String s2) {
         return null;
     }
 }

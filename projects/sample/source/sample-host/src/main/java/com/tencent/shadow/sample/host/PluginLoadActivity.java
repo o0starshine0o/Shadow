@@ -19,6 +19,7 @@
 package com.tencent.shadow.sample.host;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -46,6 +47,8 @@ public class PluginLoadActivity extends Activity {
         mViewGroup = findViewById(R.id.container);
 
         startPlugin();
+//        loadFragment();
+
     }
 
 
@@ -83,6 +86,24 @@ public class PluginLoadActivity extends Activity {
 
                     }
                 });
+            }
+        });
+    }
+
+    void loadFragment() {
+        PluginHelper.getInstance().singlePool.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                HostApplication.getApp().loadPluginManager(PluginHelper.getInstance().pluginManagerFile);
+
+                String pluginZipPath = PluginHelper.getInstance().pluginZipFile.getAbsolutePath();
+                String partKey = getIntent().getStringExtra(Constant.KEY_PLUGIN_PART_KEY);
+                String name = getIntent().getStringExtra(Constant.KEY_ACTIVITY_CLASSNAME);
+
+                // 注意，这个enter是标准的代理模式，代理的是插件的PluginManagerImpl, SamplePluginManager
+                Fragment fragment = HostApplication.getApp().getPluginManager().getPluginClass(PluginLoadActivity.this, pluginZipPath, partKey, name);
+                getFragmentManager().beginTransaction().add(R.id.fragmentContainer, fragment).commit();
             }
         });
     }

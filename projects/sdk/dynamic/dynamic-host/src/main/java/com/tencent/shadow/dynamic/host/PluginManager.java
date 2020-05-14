@@ -44,10 +44,11 @@ public interface PluginManager {
     /**
      * 宿主通过这个方法，获取插件app中的类
      *
-     * @param context 传入当前界面的Context以便打开下一个插件Activity
-     * @param clazz  标识本次请求的来源位置，用于区分入口，用来让Manager的实现逻辑分辨这一次enter是从哪里来的
-     * @param name  将所有插件中可能用到的参数通过Bundle传给插件
+     * @param context 传入当前界面的Context
+     * @param pluginZipPath  插件的zip目录
+     * @param partKey  插件的part
+     * @param name  需要实例化的插件中的类名
      * @return 具体的实例
      */
-    <T> T getPluginClass(Context context, Class<T> clazz, String name);
+    <T> T getPluginClass(Context context, String pluginZipPath, String partKey, String name);
 }

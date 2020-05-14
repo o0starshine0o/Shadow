@@ -29,6 +29,7 @@ import dalvik.system.DexClassLoader;
  * <p>
  * 将宿主apk和插件apk隔离。但例外的是,插件可以从宿主apk中加载到约定的（就是在插件apk中白名单中的）接口。
  * 这样隔离的目的是让宿主apk中的类可以通过约定的接口使用插件apk中的实现。而插件中的类不会使用到和宿主同名的类。
+ * 就是说宿主可以通过类似PluginManager这样的接口，直接操作插件中类的方法
  * https://juejin.im/post/5d1b466f6fb9a07ed524b995#heading-1
  * <p>
  * 如果目标类符合构造时传入的包名,则从parent ClassLoader中查找,否则先从自己的dexPath中查找,如果找不到,则再从
@@ -36,11 +37,11 @@ import dalvik.system.DexClassLoader;
  *
  * @author cubershi
  */
-class ApkClassLoader extends DexClassLoader {
+public class ApkClassLoader extends DexClassLoader {
     private ClassLoader mGrandParent;
     private final String[] mInterfacePackageNames;
 
-    ApkClassLoader(InstalledApk installedApk,
+    public ApkClassLoader(InstalledApk installedApk,
                    ClassLoader parent, String[] mInterfacePackageNames, int grandTimes) {
         super(installedApk.apkFilePath, installedApk.oDexPath, installedApk.libraryPath, parent);
         ClassLoader grand = parent;
@@ -52,7 +53,7 @@ class ApkClassLoader extends DexClassLoader {
     }
 
     @Override
-    protected Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
+    public Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
         String packageName;
         int dot = className.lastIndexOf('.');
         if (dot != -1) {

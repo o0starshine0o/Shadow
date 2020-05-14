@@ -18,13 +18,16 @@
 
 package com.tencent.shadow.sample.manager;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.tencent.shadow.core.common.InstalledApk;
 import com.tencent.shadow.core.manager.installplugin.InstalledPlugin;
+import com.tencent.shadow.dynamic.host.ApkClassLoader;
 import com.tencent.shadow.dynamic.host.EnterCallback;
 import com.tencent.shadow.sample.constant.Constant;
 
@@ -80,14 +83,26 @@ public class SamplePluginManager extends FastPluginManager {
             //do nothing.
         } else if (fromId == Constant.FROM_ID_START_ACTIVITY) {
             onStartActivity(context, bundle, callback);
+        } else if (fromId == Constant.FROM_ID_GET_CLASS) {
+            getClass(context, bundle, callback);
         } else {
             throw new IllegalArgumentException("不认识的fromId==" + fromId);
         }
     }
 
     @Override
-    public <T> T getPluginClass(Context context, Class<T> aClass, String s) {
-        return null;
+    public <T> T getPluginClass(Context context, String pluginZipPath, String partKey, String name) {
+        try {
+            InstalledPlugin installedPlugin = installPlugin(pluginZipPath, null, true);
+            loadPlugin(installedPlugin.UUID, partKey);
+            InstalledPlugin.Part part = installedPlugin.getPart(partKey);
+            InstalledApk installedApk = new InstalledApk(part.pluginFile, part.oDexDir, part.libraryDir);
+            ApkClassLoader pluginLoaderClassLoader = new ApkClassLoader(installedApk,getClass().getClassLoader(),new String[]{},1);
+            Class<?> calzz = pluginLoaderClassLoader.loadClass(name);
+            return (T) calzz.newInstance();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private void onStartActivity(final Context context, Bundle bundle, final EnterCallback callback) {
@@ -109,6 +124,56 @@ public class SamplePluginManager extends FastPluginManager {
             public void run() {
                 try {
                     InstalledPlugin installedPlugin = installPlugin(pluginZipPath, null, true);
+                    Intent pluginIntent = new Intent();
+                    pluginIntent.setClassName(
+                            context.getPackageName(),
+                            className
+                    );
+                    if (extras != null) {
+                        pluginIntent.replaceExtras(extras);
+                    }
+
+                    startPluginActivity(installedPlugin, partKey, pluginIntent);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                if (callback != null) {
+                    callback.onCloseLoadingView();
+                }
+            }
+        });
+    }
+
+    private void getClass(final Context context, Bundle bundle, final EnterCallback callback) {
+        final String pluginZipPath = bundle.getString(Constant.KEY_PLUGIN_ZIP_PATH);
+        final String partKey = bundle.getString(Constant.KEY_PLUGIN_PART_KEY);
+        final String className = bundle.getString(Constant.KEY_ACTIVITY_CLASSNAME);
+        if (className == null) {
+            throw new NullPointerException("className == null");
+        }
+        final Bundle extras = bundle.getBundle(Constant.KEY_EXTRAS);
+
+        if (callback != null) {
+            final View view = LayoutInflater.from(mCurrentContext).inflate(R.layout.activity_load_plugin, null);
+            callback.onShowLoadingView(view);
+        }
+
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InstalledPlugin installedPlugin = installPlugin(pluginZipPath, null, true);
+                    InstalledPlugin.Part part = installedPlugin.getPart(partKey);
+                    InstalledApk installedApk = new InstalledApk(part.pluginFile, part.oDexDir, part.libraryDir);
+                    ApkClassLoader pluginLoaderClassLoader = new ApkClassLoader(
+                            installedApk,
+                            getClass().getClassLoader(),
+                            new String[]{},
+                            1
+                    );
+                    Class<?> calzz = pluginLoaderClassLoader.loadClass(className);
+                    Fragment fragment = (Fragment)calzz.newInstance();
+//                    pluginLoaderClassLoader.getinter;
                     Intent pluginIntent = new Intent();
                     pluginIntent.setClassName(
                             context.getPackageName(),

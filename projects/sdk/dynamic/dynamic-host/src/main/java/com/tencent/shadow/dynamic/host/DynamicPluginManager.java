@@ -53,10 +53,10 @@ public final class DynamicPluginManager implements PluginManager {
     }
 
     @Override
-    public <T> T getPluginClass(Context context, Class<T> clazz, String name) {
+    public <T> T getPluginClass(Context context, String pluginZipPath, String partKey, String name) {
         updateManagerImpl(context);
         mUpdater.update();
-        return mManagerImpl.getPluginClass(context, clazz, name);
+        return mManagerImpl.getPluginClass(context, pluginZipPath, partKey, name);
     }
 
     public void release() {

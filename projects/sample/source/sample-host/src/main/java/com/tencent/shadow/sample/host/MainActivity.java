@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.tencent.shadow.dynamic.host.EnterCallback;
 import com.tencent.shadow.sample.constant.Constant;
 
 
@@ -71,12 +72,15 @@ public class MainActivity extends Activity {
                     //为了演示多进程多插件，其实两个插件内容完全一样，除了所在进程
                     case Constant.PART_KEY_PLUGIN_MAIN_APP:
                     case Constant.PART_KEY_PLUGIN_ANOTHER_APP:
-                        intent.putExtra(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.sample.plugin.app.lib.gallery.splash.SplashActivity");
+                        intent.putExtra(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.sample.plugin.app.lib.gallery.MainActivity");
+//                        intent.putExtra(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.sample.plugin.app.lib.usecases.fragment.TestFragment");
                         break;
                     default:
                         break;
                 }
-                startActivity(intent);
+//                startActivity(intent);
+
+                startPlugin();
             }
         });
         rootView.addView(startPluginButton);
@@ -103,6 +107,47 @@ public class MainActivity extends Activity {
                 }
             }
         }
+    }
+
+
+
+
+    public void startPlugin() {
+
+        PluginHelper.getInstance().singlePool.execute(new Runnable() {
+            @Override
+            public void run() {
+                HostApplication.getApp().loadPluginManager(PluginHelper.getInstance().pluginManagerFile);
+
+                Bundle bundle = new Bundle();
+                bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, PluginHelper.getInstance().pluginZipFile.getAbsolutePath());
+                bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "sample-plugin-app");
+                bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.sample.plugin.app.lib.gallery.MainActivity");
+
+                // 注意，这个enter是标准的代理模式，代理的是插件的PluginManagerImpl
+                HostApplication.getApp().getPluginManager().enter(MainActivity.this, Constant.FROM_ID_START_ACTIVITY, bundle, new EnterCallback() {
+                    @Override
+                    public void onShowLoadingView(final View view) {
+//                        mHandler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                mViewGroup.addView(view);
+//                            }
+//                        });
+                    }
+
+                    @Override
+                    public void onCloseLoadingView() {
+//                        finish();
+                    }
+
+                    @Override
+                    public void onEnterComplete() {
+
+                    }
+                });
+            }
+        });
     }
 
 }

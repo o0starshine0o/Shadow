@@ -61,11 +61,12 @@ class PpsBinder extends android.os.Binder {
                 }
                 return true;
             }
+            // 通过uuid获取InstalledApk，进而在构建出PluginLoaderImpl
             case TRANSACTION_loadPluginLoader: {
                 data.enforceInterface(DESCRIPTOR);
-                String arg0 = data.readString();
+                String uuid = data.readString();
                 try {
-                    mPps.loadPluginLoader(arg0);
+                    mPps.loadPluginLoader(uuid);
                     reply.writeInt(TRANSACTION_CODE_NO_EXCEPTION);
                 } catch (FailedException e) {
                     reply.writeInt(TRANSACTION_CODE_FAILED_EXCEPTION);

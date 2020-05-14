@@ -24,15 +24,15 @@
     android:background="#0000ff"
     android:orientation="vertical">
 
-<!--    <fragment-->
-<!--        android:id="@+id/fragmentContainer"-->
-<!--        android:name="com.tencent.shadow.sample.host.HostFragment"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_margin="50dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:background="#ff0000"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

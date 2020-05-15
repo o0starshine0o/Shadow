@@ -27,9 +27,9 @@ import java.io.File;
 final class ManagerImplLoader extends ImplLoader {
     /**
      * 这个类在所有的插件中都需要固定包名和类名，并且要实现ManagerFactory接口，返回对应的Manager
-     * 注意，这个类实现的所有接口，都会被ApkClassLoader移花接木
+     * 用于给宿主APP提供Manager的实例
      */
-    private static final String MANAGER_FACTORY_CLASS_NAME = "com.tencent.shadow.dynamic.impl.ManagerFactoryImpl";
+    private static final String MANAGER_FACTORY_CLASS_NAME = "com.protostar.impl.ManagerFactoryImpl";
     /**
      * 这些位于宿主中的类也将会出现在白名单中，插件apk可以直接使用
      */

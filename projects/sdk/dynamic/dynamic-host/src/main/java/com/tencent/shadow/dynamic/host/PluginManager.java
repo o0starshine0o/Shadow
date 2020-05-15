@@ -19,6 +19,8 @@
 package com.tencent.shadow.dynamic.host;
 
 import android.content.Context;
+import android.database.DefaultDatabaseErrorHandler;
+import android.os.Build;
 import android.os.Bundle;
 
 /**
@@ -42,13 +44,13 @@ public interface PluginManager {
 
 
     /**
-     * 宿主通过这个方法，获取插件app中的类
+     * 宿主通过这个方法，获取插件app中类的实例（无跨进程相关内容）
      *
-     * @param context 传入当前界面的Context
+     * @param context 传入当前界面的Context，以便加载插件
      * @param pluginZipPath  插件的zip目录
-     * @param partKey  插件的part
+     * @param partKey  插件的partKey
      * @param name  需要实例化的插件中的类名
-     * @return 具体的实例
+     * @return 从插件中获取到的类
      */
-    <T> T getPluginClass(Context context, String pluginZipPath, String partKey, String name);
+    Class<?> getPluginClass(Context context, String pluginZipPath, String partKey, String name);
 }

@@ -41,15 +41,17 @@ public class TestFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.layout_fragment_test, null, false);
-        TextView textView = view.findViewById(R.id.tv_msg);
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            String msg = bundle.getString("msg");
-            if (!TextUtils.isEmpty(msg)) {
-                textView.setText(msg);
-            }
-        }
-        return view;
+//        View view = inflater.inflate(R.layout.layout_fragment_test, null, false);
+//        TextView textView = view.findViewById(R.id.tv_msg);
+//        Bundle bundle = getArguments();
+//        if (bundle != null) {
+//            String msg = bundle.getString("msg");
+//            if (!TextUtils.isEmpty(msg)) {
+//                textView.setText(msg);
+//            }
+//        }
+        TextView textView = new TextView(getActivity());
+        textView.setText("这是测试fragment");
+        return textView;
     }
 }

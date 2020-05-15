@@ -21,6 +21,7 @@ package com.tencent.shadow.dynamic.host;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.tencent.shadow.core.common.InstalledApk;
 import com.tencent.shadow.core.common.Logger;
 import com.tencent.shadow.core.common.LoggerFactory;
 
@@ -53,7 +54,10 @@ public final class DynamicPluginManager implements PluginManager {
     }
 
     @Override
-    public <T> T getPluginClass(Context context, String pluginZipPath, String partKey, String name) {
+    public Class<?> getPluginClass(Context context, String pluginZipPath, String partKey, String name) {
+        if (mLogger.isInfoEnabled()) {
+            mLogger.info("get class:"+name+" from plugin:" + pluginZipPath + " with partKey:" + partKey);
+        }
         updateManagerImpl(context);
         mUpdater.update();
         return mManagerImpl.getPluginClass(context, pluginZipPath, partKey, name);

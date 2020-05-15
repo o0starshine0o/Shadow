@@ -46,8 +46,8 @@ public class PluginLoadActivity extends Activity {
 
         mViewGroup = findViewById(R.id.container);
 
-        startPlugin();
-//        loadFragment();
+//        startPlugin();
+        loadFragment();
 
     }
 
@@ -102,8 +102,17 @@ public class PluginLoadActivity extends Activity {
                 String name = getIntent().getStringExtra(Constant.KEY_ACTIVITY_CLASSNAME);
 
                 // 注意，这个enter是标准的代理模式，代理的是插件的PluginManagerImpl, SamplePluginManager
-                Fragment fragment = HostApplication.getApp().getPluginManager().getPluginClass(PluginLoadActivity.this, pluginZipPath, partKey, name);
-                getFragmentManager().beginTransaction().add(R.id.fragmentContainer, fragment).commit();
+                Class<?> clazz = HostApplication.getApp().getPluginManager().getPluginClass(PluginLoadActivity.this, pluginZipPath, partKey, name);
+                if (clazz != null){
+                    try {
+                        Fragment fragment = (Fragment)clazz.newInstance();
+                        getFragmentManager().beginTransaction().add(R.id.fragmentContainer, fragment).commit();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
     }

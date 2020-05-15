@@ -3,6 +3,9 @@ package com.tencent.shadow.test.dynamic.manager;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.tencent.shadow.core.common.InstalledApk;
+import com.tencent.shadow.core.manager.installplugin.InstalledPlugin;
+import com.tencent.shadow.dynamic.host.ApkClassLoader;
 import com.tencent.shadow.dynamic.host.EnterCallback;
 import com.tencent.shadow.dynamic.host.PluginManagerImpl;
 import com.tencent.shadow.test.lib.constant.Constant;
@@ -43,7 +46,16 @@ final public class TestDynamicPluginManager implements PluginManagerImpl {
     }
 
     @Override
-    public <T> T getPluginClass(Context context, String s, String s1, String s2) {
-        return null;
+    public Class<?> getPluginClass(Context context, String pluginZipPath, String partKey, String name) {
+        try {
+            InstalledPlugin installedPlugin = serviceTestDynamicPluginManager.installPlugin(pluginZipPath, null, true);
+            serviceTestDynamicPluginManager.loadPlugin(installedPlugin.UUID, partKey);
+            InstalledPlugin.Part part = installedPlugin.getPart(partKey);
+            InstalledApk installedApk = new InstalledApk(part.pluginFile, part.oDexDir, part.libraryDir);
+            ApkClassLoader pluginLoaderClassLoader = new ApkClassLoader(installedApk,getClass().getClassLoader(),new String[]{},1);
+            return pluginLoaderClassLoader.loadClass(name);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

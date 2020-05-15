@@ -24,7 +24,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.tencent.shadow.core.common.InstalledApk;
 import com.tencent.shadow.core.manager.installplugin.InstalledPlugin;
+import com.tencent.shadow.dynamic.host.ApkClassLoader;
 import com.tencent.shadow.dynamic.host.EnterCallback;
 import com.tencent.shadow.test.lib.constant.Constant;
 import com.tencent.shadow.test.lib.test_manager.TestManager;
@@ -80,8 +82,17 @@ public class ActivityTestDynamicPluginManager extends FastPluginManager {
     }
 
     @Override
-    public <T> T getPluginClass(Context context, String s, String s1, String s2) {
-        return null;
+    public Class<?> getPluginClass(Context context, String pluginZipPath, String partKey, String name) {
+        try {
+            InstalledPlugin installedPlugin = installPlugin(pluginZipPath, null, true);
+            loadPlugin(installedPlugin.UUID, partKey);
+            InstalledPlugin.Part part = installedPlugin.getPart(partKey);
+            InstalledApk installedApk = new InstalledApk(part.pluginFile, part.oDexDir, part.libraryDir);
+            ApkClassLoader pluginLoaderClassLoader = new ApkClassLoader(installedApk,getClass().getClassLoader(),new String[]{},1);
+            return pluginLoaderClassLoader.loadClass(name);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private void onStartActivity(final Context context, Bundle bundle, final EnterCallback callback) {

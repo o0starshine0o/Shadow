@@ -34,7 +34,7 @@ import java.util.concurrent.CountDownLatch
 internal class DynamicPluginLoader(hostContext: Context, uuid: String) {
     companion object {
         private const val CORE_LOADER_FACTORY_IMPL_NAME =
-                "com.tencent.shadow.dynamic.loader.impl.CoreLoaderFactoryImpl"
+                "com.protostar.plugin.impl.CoreLoaderFactoryImpl"
     }
     fun setUuidManager(p0: UuidManager?) {
         if (p0 != null)

@@ -82,19 +82,19 @@ public class ServiceTestDynamicPluginManager extends FastPluginManager {
         }
     }
 
-    @Override
-    public Class<?> getPluginClass(Context context, String pluginZipPath, String partKey, String name) {
-        try {
-            InstalledPlugin installedPlugin = installPlugin(pluginZipPath, null, true);
-            loadPlugin(installedPlugin.UUID, partKey);
-            InstalledPlugin.Part part = installedPlugin.getPart(partKey);
-            InstalledApk installedApk = new InstalledApk(part.pluginFile, part.oDexDir, part.libraryDir);
-            ApkClassLoader pluginLoaderClassLoader = new ApkClassLoader(installedApk,getClass().getClassLoader(),new String[]{},1);
-            return pluginLoaderClassLoader.loadClass(name);
-        } catch (Exception e) {
-            return null;
-        }
-    }
+//    @Override
+//    public Class<?> getPluginClass(Context context, String pluginZipPath, String partKey, String name) {
+//        try {
+//            InstalledPlugin installedPlugin = installPlugin(pluginZipPath, null, true);
+//            loadPlugin(installedPlugin.UUID, partKey);
+//            InstalledPlugin.Part part = installedPlugin.getPart(partKey);
+//            InstalledApk installedApk = new InstalledApk(part.pluginFile, part.oDexDir, part.libraryDir);
+//            ApkClassLoader pluginLoaderClassLoader = new ApkClassLoader(installedApk,getClass().getClassLoader(),new String[]{},1);
+//            return pluginLoaderClassLoader.loadClass(name);
+//        } catch (Exception e) {
+//            return null;
+//        }
+//    }
 
     private void doCase(Intent pluginIntent) throws InterruptedException {
         String className = pluginIntent.getComponent().getClassName();

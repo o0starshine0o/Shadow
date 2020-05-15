@@ -53,15 +53,15 @@ public final class DynamicPluginManager implements PluginManager {
         mUpdater.update();
     }
 
-    @Override
-    public Class<?> getPluginClass(Context context, String pluginZipPath, String partKey, String name) {
-        if (mLogger.isInfoEnabled()) {
-            mLogger.info("get class:"+name+" from plugin:" + pluginZipPath + " with partKey:" + partKey);
-        }
-        updateManagerImpl(context);
-        mUpdater.update();
-        return mManagerImpl.getPluginClass(context, pluginZipPath, partKey, name);
-    }
+//    @Override
+//    public Class<?> getPluginClass(Context context, String pluginZipPath, String partKey, String name) {
+//        if (mLogger.isInfoEnabled()) {
+//            mLogger.info("get class:"+name+" from plugin:" + pluginZipPath + " with partKey:" + partKey);
+//        }
+//        updateManagerImpl(context);
+//        mUpdater.update();
+//        return mManagerImpl.getPluginClass(context, pluginZipPath, partKey, name);
+//    }
 
     public void release() {
         if (mLogger.isInfoEnabled()) {

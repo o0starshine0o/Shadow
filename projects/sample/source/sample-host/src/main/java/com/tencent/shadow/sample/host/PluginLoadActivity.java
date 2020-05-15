@@ -101,18 +101,18 @@ public class PluginLoadActivity extends Activity {
                 String partKey = getIntent().getStringExtra(Constant.KEY_PLUGIN_PART_KEY);
                 String name = getIntent().getStringExtra(Constant.KEY_ACTIVITY_CLASSNAME);
 
-                // 注意，这个enter是标准的代理模式，代理的是插件的PluginManagerImpl, SamplePluginManager
-                Class<?> clazz = HostApplication.getApp().getPluginManager().getPluginClass(PluginLoadActivity.this, pluginZipPath, partKey, name);
-                if (clazz != null){
-                    try {
-                        Fragment fragment = (Fragment)clazz.newInstance();
-                        getFragmentManager().beginTransaction().add(R.id.fragmentContainer, fragment).commit();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InstantiationException e) {
-                        e.printStackTrace();
-                    }
-                }
+//                // 注意，这个enter是标准的代理模式，代理的是插件的PluginManagerImpl, SamplePluginManager
+//                Class<?> clazz = HostApplication.getApp().getPluginManager().getPluginClass(PluginLoadActivity.this, pluginZipPath, partKey, name);
+//                if (clazz != null){
+//                    try {
+//                        Fragment fragment = (Fragment)clazz.newInstance();
+//                        getFragmentManager().beginTransaction().add(R.id.fragmentContainer, fragment).commit();
+//                    } catch (IllegalAccessException e) {
+//                        e.printStackTrace();
+//                    } catch (InstantiationException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
             }
         });
     }

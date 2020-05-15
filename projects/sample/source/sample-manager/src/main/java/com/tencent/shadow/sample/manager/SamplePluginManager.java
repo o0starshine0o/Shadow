@@ -90,19 +90,19 @@ public class SamplePluginManager extends FastPluginManager {
         }
     }
 
-    @Override
-    public Class<?> getPluginClass(Context context, String pluginZipPath, String partKey, String name) {
-        try {
-            InstalledPlugin installedPlugin = installPlugin(pluginZipPath, null, true);
-            loadPlugin(installedPlugin.UUID, partKey);
-            InstalledPlugin.Part part = installedPlugin.getPart(partKey);
-            InstalledApk installedApk = new InstalledApk(part.pluginFile, part.oDexDir, part.libraryDir);
-            ApkClassLoader pluginLoaderClassLoader = new ApkClassLoader(installedApk,getClass().getClassLoader(),new String[]{},1);
-            return pluginLoaderClassLoader.loadClass(name);
-        } catch (Exception e) {
-            return null;
-        }
-    }
+//    @Override
+//    public Class<?> getPluginClass(Context context, String pluginZipPath, String partKey, String name) {
+//        try {
+//            InstalledPlugin installedPlugin = installPlugin(pluginZipPath, null, true);
+//            loadPlugin(installedPlugin.UUID, partKey);
+//            InstalledPlugin.Part part = installedPlugin.getPart(partKey);
+//            InstalledApk installedApk = new InstalledApk(part.pluginFile, part.oDexDir, part.libraryDir);
+//            ApkClassLoader pluginLoaderClassLoader = new ApkClassLoader(installedApk,getClass().getClassLoader(),new String[]{},1);
+//            return pluginLoaderClassLoader.loadClass(name);
+//        } catch (Exception e) {
+//            return null;
+//        }
+//    }
 
     private void onStartActivity(final Context context, Bundle bundle, final EnterCallback callback) {
         final String pluginZipPath = bundle.getString(Constant.KEY_PLUGIN_ZIP_PATH);

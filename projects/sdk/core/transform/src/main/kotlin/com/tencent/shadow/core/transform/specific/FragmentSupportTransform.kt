@@ -102,6 +102,11 @@ class FragmentSupportTransform : SpecificTransform() {
                     ctClass.instrument(codeConverter)
                 } catch (e: Exception) {
                     System.err.println("FragmentSupportTransform[104]处理" + ctClass.name + "时出错:" + e)
+                    var cause = e.cause
+                    while (cause != null){
+                        System.err.println("FragmentSupportTransform[107]处理" + ctClass.name + "时出错:" + cause.localizedMessage)
+                        cause = cause.cause
+                    }
                     throw e
                 }
             }

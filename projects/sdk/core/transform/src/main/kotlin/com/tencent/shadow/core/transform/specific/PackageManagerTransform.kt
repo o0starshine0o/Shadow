@@ -88,7 +88,7 @@ class PackageManagerTransform : SpecificTransform() {
                         codeConverter.redirectMethodCallToStaticMethodCall(targetMethod, newMethod)
                         ctClass.instrument(codeConverter)
                     } catch (e: Exception) {
-                        System.err.println("处理" + ctClass.name + "时出错:" + e)
+                        System.err.println("PackageManagerTransform[91]处理" + ctClass.name + "时出错:" + e)
                         throw e
                     }
                 }

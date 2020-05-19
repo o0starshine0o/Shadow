@@ -96,7 +96,7 @@ class PackageItemInfoTransform : SpecificTransform() {
                         codeConverter.redirectMethodCallToStaticMethodCall(targetMethod, newMethod)
                         ctClass.instrument(codeConverter)
                     } catch (e: Exception) {
-                        System.err.println("处理" + ctClass.name + "时出错:" + e)
+                        System.err.println("PackageItemInfoTransform[99]处理" + ctClass.name + "时出错:" + e)
                         throw e
                     }
                 }

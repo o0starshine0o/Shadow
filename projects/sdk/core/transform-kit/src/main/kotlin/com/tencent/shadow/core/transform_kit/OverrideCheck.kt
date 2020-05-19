@@ -51,7 +51,7 @@ class OverrideCheck {
                 methodMap[name] = clazz.findAllOverrideMethods()
                 ctClassMap[name] = clazz
             } catch (e: Exception) {
-                throw RuntimeException("处理${name}时发生错误", e)
+                throw RuntimeException("处理${name}时发生错误,好好看看", e)
             }
         }
     }

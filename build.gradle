@@ -24,6 +24,7 @@ buildscript {
         mavenCentral()
         jcenter()
         google()
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$build_gradle_version"

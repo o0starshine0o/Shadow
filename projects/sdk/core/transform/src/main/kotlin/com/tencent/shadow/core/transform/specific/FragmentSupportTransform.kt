@@ -101,7 +101,7 @@ class FragmentSupportTransform : SpecificTransform() {
                 try {
                     ctClass.instrument(codeConverter)
                 } catch (e: Exception) {
-                    System.err.println("处理" + ctClass.name + "时出错:" + e)
+                    System.err.println("FragmentSupportTransform[104]处理" + ctClass.name + "时出错:" + e)
                     throw e
                 }
             }
@@ -200,7 +200,7 @@ class FragmentSupportTransform : SpecificTransform() {
                     try {
                         ctClass.instrument(codeConverter)
                     } catch (e: Exception) {
-                        System.err.println("处理" + ctClass.name + "时出错:" + e)
+                        System.err.println("FragmentSupportTransform[203]处理" + ctClass.name + "时出错:" + e)
                         throw e
                     }
 
@@ -239,7 +239,7 @@ class FragmentSupportTransform : SpecificTransform() {
                     try {
                         ctClass.instrument(codeConverter)
                     } catch (e: Exception) {
-                        System.err.println("处理" + ctClass.name + "时出错:" + e)
+                        System.err.println("FragmentSupportTransform[242]处理" + ctClass.name + "时出错:" + e)
                         throw e
                     }
 
@@ -376,7 +376,7 @@ class FragmentSupportTransform : SpecificTransform() {
                     try {
                         ctClass.instrument(codeConverter)
                     } catch (e: Exception) {
-                        System.err.println("处理" + ctClass.name + "时出错:" + e)
+                        System.err.println("FragmentSupportTransform[379]处理" + ctClass.name + "时出错:" + e)
                         throw e
                     }
 
@@ -415,7 +415,7 @@ class FragmentSupportTransform : SpecificTransform() {
                     try {
                         ctClass.instrument(codeConverter)
                     } catch (e: Exception) {
-                        System.err.println("处理" + ctClass.name + "时出错:" + e)
+                        System.err.println("FragmentSupportTransform[418]处理" + ctClass.name + "时出错:" + e)
                         throw e
                     }
 

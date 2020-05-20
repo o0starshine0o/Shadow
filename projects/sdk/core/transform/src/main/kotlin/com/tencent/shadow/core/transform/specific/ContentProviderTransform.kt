@@ -112,8 +112,13 @@ class ContentProviderTransform : SpecificTransform() {
                 try {
                     ctClass.instrument(uriParseCodeConverter)
                 } catch (e: Exception) {
-                    System.err.println("处理" + ctClass.name + "时出错")
-                    throw e
+                    System.err.println("${this@ContentProviderTransform::class.java} 处理${ctClass.name}时出错:${e.localizedMessage}")
+                    var cause = e.cause
+                    while (cause != null){
+                        System.err.println("${this@ContentProviderTransform::class.java} 处理${ctClass.name}时出错:${cause.localizedMessage}")
+                        cause = cause.cause
+                    }
+//                    throw e
                 }
             }
         })
@@ -126,8 +131,13 @@ class ContentProviderTransform : SpecificTransform() {
                 try {
                     ctClass.instrument(uriBuilderCodeConverter)
                 } catch (e: Exception) {
-                    System.err.println("处理" + ctClass.name + "时出错")
-                    throw e
+                    System.err.println("${this@ContentProviderTransform::class.java} 处理${ctClass.name}时出错:${e.localizedMessage}")
+                    var cause = e.cause
+                    while (cause != null){
+                        System.err.println("${this@ContentProviderTransform::class.java} 处理${ctClass.name}时出错:${cause?.localizedMessage}")
+                        cause = cause?.cause
+                    }
+//                    throw e
                 }
             }
         })
@@ -140,8 +150,13 @@ class ContentProviderTransform : SpecificTransform() {
                 try {
                     ctClass.instrument(contentResolverCodeConverter)
                 } catch (e: Exception) {
-                    System.err.println("处理" + ctClass.name + "时出错")
-                    throw e
+                    System.err.println("${this@ContentProviderTransform::class.java} 处理${ctClass.name}时出错:${e.localizedMessage}")
+                    var cause = e.cause
+                    while (cause != null){
+                        System.err.println("${this@ContentProviderTransform::class.java} 处理${ctClass.name}时出错:${cause?.localizedMessage}")
+                        cause = cause?.cause
+                    }
+//                    throw e
                 }
             }
         })

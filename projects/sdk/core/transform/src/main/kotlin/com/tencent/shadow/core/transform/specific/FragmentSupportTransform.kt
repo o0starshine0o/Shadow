@@ -101,13 +101,12 @@ class FragmentSupportTransform : SpecificTransform() {
                 try {
                     ctClass.instrument(codeConverter)
                 } catch (e: Exception) {
-                    System.err.println("FragmentSupportTransform[104]处理" + ctClass.name + "时出错:" + e)
+                    System.err.println("${this@FragmentSupportTransform::class.java} 处理${ctClass.name}时出错:${e.localizedMessage}")
                     var cause = e.cause
                     while (cause != null){
-                        System.err.println("FragmentSupportTransform[107]处理" + ctClass.name + "时出错:" + cause.localizedMessage)
+                        System.err.println("${this@FragmentSupportTransform::class.java} 处理${ctClass.name}时出错:${cause.localizedMessage}")
                         cause = cause.cause
                     }
-                    // 遇到无法找到的类只显示，不报错
 //                    throw e
                 }
             }
@@ -206,8 +205,13 @@ class FragmentSupportTransform : SpecificTransform() {
                     try {
                         ctClass.instrument(codeConverter)
                     } catch (e: Exception) {
-                        System.err.println("FragmentSupportTransform[203]处理" + ctClass.name + "时出错:" + e)
-                        throw e
+                        System.err.println("${this@FragmentSupportTransform::class.java} 处理${ctClass.name}时出错:${e.localizedMessage}")
+                        var cause = e.cause
+                        while (cause != null){
+                            System.err.println("${this@FragmentSupportTransform::class.java} 处理${ctClass.name}时出错:${cause?.localizedMessage}")
+                            cause = cause?.cause
+                        }
+//                        throw e
                     }
 
                     /**
@@ -245,8 +249,13 @@ class FragmentSupportTransform : SpecificTransform() {
                     try {
                         ctClass.instrument(codeConverter)
                     } catch (e: Exception) {
-                        System.err.println("FragmentSupportTransform[242]处理" + ctClass.name + "时出错:" + e)
-                        throw e
+                        System.err.println("${this@FragmentSupportTransform::class.java} 处理${ctClass.name}时出错:${e.localizedMessage}")
+                        var cause = e.cause
+                        while (cause != null){
+                            System.err.println("${this@FragmentSupportTransform::class.java} 处理${ctClass.name}时出错:${cause?.localizedMessage}")
+                            cause = cause?.cause
+                        }
+//                        throw e
                     }
 
                     /**
@@ -382,8 +391,13 @@ class FragmentSupportTransform : SpecificTransform() {
                     try {
                         ctClass.instrument(codeConverter)
                     } catch (e: Exception) {
-                        System.err.println("FragmentSupportTransform[379]处理" + ctClass.name + "时出错:" + e)
-                        throw e
+                        System.err.println("${this@FragmentSupportTransform::class.java} 处理${ctClass.name}时出错:${e.localizedMessage}")
+                        var cause = e.cause
+                        while (cause != null){
+                            System.err.println("${this@FragmentSupportTransform::class.java} 处理${ctClass.name}时出错:${cause?.localizedMessage}")
+                            cause = cause?.cause
+                        }
+//                        throw e
                     }
 
                     /**
@@ -421,8 +435,13 @@ class FragmentSupportTransform : SpecificTransform() {
                     try {
                         ctClass.instrument(codeConverter)
                     } catch (e: Exception) {
-                        System.err.println("FragmentSupportTransform[418]处理" + ctClass.name + "时出错:" + e)
-                        throw e
+                        System.err.println("${this@FragmentSupportTransform::class.java} 处理${ctClass.name}时出错:${e.localizedMessage}")
+                        var cause = e.cause
+                        while (cause != null){
+                            System.err.println("${this@FragmentSupportTransform::class.java} 处理${ctClass.name}时出错:${cause?.localizedMessage}")
+                            cause = cause?.cause
+                        }
+//                        throw e
                     }
 
                     /**

@@ -96,8 +96,13 @@ class PackageItemInfoTransform : SpecificTransform() {
                         codeConverter.redirectMethodCallToStaticMethodCall(targetMethod, newMethod)
                         ctClass.instrument(codeConverter)
                     } catch (e: Exception) {
-                        System.err.println("PackageItemInfoTransform[99]处理" + ctClass.name + "时出错:" + e)
-                        throw e
+                        System.err.println("${this@PackageItemInfoTransform::class.java} 处理${ctClass.name}时出错:${e.localizedMessage}")
+                        var cause = e.cause
+                        while (cause != null){
+                            System.err.println("${this@PackageItemInfoTransform::class.java} 处理${ctClass.name}时出错:${cause.localizedMessage}")
+                            cause = cause.cause
+                        }
+//                        throw e
                     }
                 }
             })

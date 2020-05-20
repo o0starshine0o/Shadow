@@ -83,8 +83,13 @@ class DialogTransform : SpecificTransform() {
                     ctClass.defrost()
                     ctClass.instrument(codeConverter)
                 } catch (e: Exception) {
-                    System.err.println("处理" + ctClass.name + "时出错")
-                    throw e
+                    System.err.println("${this@DialogTransform::class.java} 处理${ctClass.name}时出错:${e.localizedMessage}")
+                    var cause = e.cause
+                    while (cause != null){
+                        System.err.println("${this@DialogTransform::class.java} 处理${ctClass.name}时出错:${cause.localizedMessage}")
+                        cause = cause.cause
+                    }
+//                    throw e
                 }
             }
 

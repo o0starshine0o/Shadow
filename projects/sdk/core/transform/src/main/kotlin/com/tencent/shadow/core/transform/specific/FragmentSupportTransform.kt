@@ -107,7 +107,8 @@ class FragmentSupportTransform : SpecificTransform() {
                         System.err.println("FragmentSupportTransform[107]处理" + ctClass.name + "时出错:" + cause.localizedMessage)
                         cause = cause.cause
                     }
-                    throw e
+                    // 遇到无法找到的类只显示，不报错
+//                    throw e
                 }
             }
         })

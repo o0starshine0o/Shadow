@@ -33,6 +33,22 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     //注意sample-host-lib要用compileOnly编译而不打包在插件中。在packagePlugin任务中配置hostWhiteList允许插件访问宿主的类。
     compileOnly files("${project(":sample-host-lib").getBuildDir()}/outputs/jar/sample-host-lib-debug.jar")
+
+    //基础组件库依赖(必须) Push 605版本必须升级新版本Common SDK
+    implementation 'com.umeng.umsdk:common:2.2.2'
+    implementation 'com.umeng.umsdk:utdid:1.5.2'
+
+//友盟push相关依赖(必须)
+    implementation 'com.umeng.umsdk:push:6.0.5'
+
+    implementation 'com.umeng.umsdk:alicloud-httpdns:1.2.5'
+    implementation 'com.umeng.umsdk:alicloud-utils:1.1.5'
+    implementation 'com.umeng.umsdk:alicloud_beacon:1.0.1'
+
+    implementation 'com.umeng.umsdk:agoo-accs:3.3.8.8-open-fix2'
+    implementation 'com.umeng.umsdk:agoo_networksdk:3.5.5'
+    implementation 'com.umeng.umsdk:agoo_tlog:3.0.0.17'
+    implementation 'com.umeng.umsdk:agoo_tnet4android:3.1.14.9'
 }
 
 preBuild.dependsOn(":sample-host-lib:jarDebugPackage")

@@ -388,6 +388,7 @@ publishing {
     repositories {
         mavenLocal()
     }
+    println("publish shadow with version: ${project.ARTIFACT_VERSION}")
 }
 
 setGeneratePomFileAndDepends('gradlePlugin')

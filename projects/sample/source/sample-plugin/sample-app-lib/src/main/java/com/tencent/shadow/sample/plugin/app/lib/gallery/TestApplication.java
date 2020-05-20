@@ -21,6 +21,7 @@ package com.tencent.shadow.sample.plugin.app.lib.gallery;
 import android.app.Application;
 
 import com.tencent.shadow.sample.plugin.app.lib.gallery.cases.UseCaseManager;
+import com.tencent.smtt.sdk.QbSdk;
 
 public class TestApplication extends Application {
 
@@ -34,6 +35,8 @@ public class TestApplication extends Application {
         isOnCreate = true;
         super.onCreate();
         UseCaseManager.initCase();
+
+        QbSdk.initX5Environment(this, null);
     }
 
     public static TestApplication getInstance() {

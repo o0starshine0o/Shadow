@@ -28,4 +28,10 @@
         android:textColor="@android:color/black"
         android:layout_gravity="center" />
 
+    <com.tencent.shadow.sample.plugin.app.lib.webview.FunWebView
+        android:layout_width="100dp"
+        android:layout_gravity="center"
+        android:background="@color/primary_color_purple"
+        android:layout_height="100dp"/>
+
 </FrameLayout>

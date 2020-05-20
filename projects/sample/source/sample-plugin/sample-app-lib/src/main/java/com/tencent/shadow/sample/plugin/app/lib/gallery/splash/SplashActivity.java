@@ -35,16 +35,16 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_splash);
 
-        mSplashAnimation = new SplashAnimation(this);
-        mSplashAnimation.start();
-
-        mSplashAnimation.setAnimationListener(new ISplashAnimation.AnimationListener() {
-            @Override
-            public void onAnimationEnd() {
-                finish();
-
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-            }
-        });
+//        mSplashAnimation = new SplashAnimation(this);
+//        mSplashAnimation.start();
+//
+//        mSplashAnimation.setAnimationListener(new ISplashAnimation.AnimationListener() {
+//            @Override
+//            public void onAnimationEnd() {
+//                finish();
+//
+//                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+//            }
+//        });
     }
 }

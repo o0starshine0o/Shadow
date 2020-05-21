@@ -18,8 +18,11 @@
 
 package com.tencent.shadow.sample.plugin.app.lib.usecases.dialog;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.tencent.shadow.sample.plugin.app.lib.R;
@@ -46,17 +49,30 @@ public class TestDialogActivity extends BaseActivity {
     }
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_dialog_activity);
     }
 
-    public void show(View view){
+    public void show(View view) {
         TestDialog dialog = new TestDialog(this);
         dialog.setContentView(R.layout.layout_dialog);
 
         dialog.show();
+    }
+
+    /**
+     * 返回值类型"Dialog"会被替换为"ShadowDialog"，因为"ShadowDialog"是"Dialog"的子类，而不是"AlertDialog"的超类
+     * 所以这边会报错
+     */
+    public Dialog showAlert(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.layout_dialog, null);
+        builder.setView(dialogView);
+        // 返回的是AlertDialog，不能用Dialog的子类"ShadowDialog"来接受这个返回值
+        AlertDialog dialog = builder.show();
+        dialog.setCanceledOnTouchOutside(true);
+        return dialog;
     }
 }

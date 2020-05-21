@@ -36,7 +36,7 @@ public class TestApplication extends Application {
         super.onCreate();
         UseCaseManager.initCase();
 
-        QbSdk.initX5Environment(this, null);
+//        QbSdk.initX5Environment(this, null);
     }
 
     public static TestApplication getInstance() {

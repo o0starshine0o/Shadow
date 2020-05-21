@@ -46,7 +46,9 @@ afterEvaluate {
     android {
         buildTypes.findAll().each { buildType ->
             def buildTypeName = buildType.getName()
-            def task = project.getTasksByName("check${buildTypeName.capitalize()}Classpath", false).first() as Task
+            // gradle 3.1.0 里面木有checkDebugClasspath的任务，这里会报错
+            def task = project.getTasksByName("check", false).first() as Task
+//            def task = project.getTasksByName("check${buildTypeName.capitalize()}Classpath", false).first() as Task
             task.dependsOn(":sample-host-lib:jarDebugPackage")
             task.dependsOn gradle.includedBuild('core').task(':common:jarDebugPackage')
             task.dependsOn gradle.includedBuild('dynamic').task(':dynamic-host:jarDebugPackage')

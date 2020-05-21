@@ -1,6 +1,5 @@
 package com.tencent.shadow.core.transform_kit
 
-import com.android.build.gradle.internal.utils.toImmutableMap
 import javassist.ClassPool
 import javassist.CtClass
 import javassist.CtMethod
@@ -64,7 +63,7 @@ class OverrideCheck {
         return newNameToOldName
     }
 
-    fun getOverrideMethods() = methodMap.toImmutableMap()
+    fun getOverrideMethods() = methodMap
 
     fun check(debugClassPool: ClassPool, classNames: List<String>): Map<String, List<Method_OriginalDeclaringClass>> {
         val newNameToOldName = makeNewNameToOldNameMap()

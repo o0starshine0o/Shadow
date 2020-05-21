@@ -25,6 +25,8 @@ android {
     }
 }
 
+apply plugin: 'io.objectbox'
+
 dependencies {
     implementation project(":slidingmenu")
     implementation project(":pinnedheaderexpandablelistview")

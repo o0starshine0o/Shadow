@@ -19,6 +19,8 @@
 package com.tencent.shadow.sample.plugin.app.lib.gallery;
 
 import android.app.Application;
+import android.content.Intent;
+import android.content.IntentFilter;
 
 import com.tencent.shadow.sample.plugin.app.lib.gallery.cases.UseCaseManager;
 
@@ -34,6 +36,10 @@ public class TestApplication extends Application {
         isOnCreate = true;
         super.onCreate();
         UseCaseManager.initCase();
+
+        // 测试注册一个接受为null的接收器
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(null, intentFilter);
     }
 
     public static TestApplication getInstance() {

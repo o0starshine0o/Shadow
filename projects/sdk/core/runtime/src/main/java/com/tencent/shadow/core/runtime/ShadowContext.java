@@ -253,22 +253,22 @@ public class ShadowContext extends SubDirContextThemeWrapper {
 
     @Override
     public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter) {
-        return super.registerReceiver(wrapBroadcastReceiver(receiver), filter);
+        return receiver == null ? null : super.registerReceiver(wrapBroadcastReceiver(receiver), filter);
     }
 
     @Override
     public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter, int flags) {
-        return super.registerReceiver(wrapBroadcastReceiver(receiver), filter, flags);
+        return receiver == null ? null : super.registerReceiver(wrapBroadcastReceiver(receiver), filter, flags);
     }
 
     @Override
     public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter, String broadcastPermission, Handler scheduler) {
-        return super.registerReceiver(wrapBroadcastReceiver(receiver), filter, broadcastPermission, scheduler);
+        return receiver == null ? null : super.registerReceiver(wrapBroadcastReceiver(receiver), filter, broadcastPermission, scheduler);
     }
 
     @Override
     public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter, String broadcastPermission, Handler scheduler, int flags) {
-        return super.registerReceiver(wrapBroadcastReceiver(receiver), filter, broadcastPermission, scheduler, flags);
+        return receiver == null ? null : super.registerReceiver(wrapBroadcastReceiver(receiver), filter, broadcastPermission, scheduler, flags);
     }
 
     @Override

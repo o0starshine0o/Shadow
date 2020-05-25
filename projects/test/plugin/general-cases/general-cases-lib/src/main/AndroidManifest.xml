@@ -76,6 +76,8 @@
         <activity android:name=".usecases.activity.ApplicationContextActivity" />
         <activity android:name=".usecases.fragment.TargetFragmentTestActivity" />
         <activity android:name=".usecases.fragment.FragmentStartedActivity" />
+        <activity android:name=".usecases.context.RegisterNullReceiverActivity" />
+        <activity android:name=".usecases.dialog.TestAlertDialogActivity" />
 
         <provider
             android:authorities="com.tencent.shadow.provider.test"

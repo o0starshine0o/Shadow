@@ -34,7 +34,7 @@ import java.util.concurrent.CountDownLatch
 internal class DynamicPluginLoader(hostContext: Context, uuid: String) {
     companion object {
         private const val CORE_LOADER_FACTORY_IMPL_NAME =
-                "com.protostar.plugin.impl.CoreLoaderFactoryImpl"
+                "com.tencent.shadow.dynamic.loader.impl.CoreLoaderFactoryImpl"
     }
     fun setUuidManager(p0: UuidManager?) {
         if (p0 != null)
@@ -76,10 +76,6 @@ internal class DynamicPluginLoader(hostContext: Context, uuid: String) {
         mUuid = uuid;
     }
 
-    /**
-     * 在这里初始化PluginServiceManager
-     * 加载插件到ClassLoader中
-     */
     fun loadPlugin(partKey: String) {
         val installedApk = mUuidManager.getPlugin(mUuid, partKey)
         val future = mPluginLoader.loadPlugin(installedApk)
@@ -225,8 +221,8 @@ internal class DynamicPluginLoader(hostContext: Context, uuid: String) {
     fun <T> ClassLoader.getInterface(clazz: Class<T>, className: String): T {
         try {
             val interfaceImplementClass = loadClass(className)
-            val interfaceImplement = interfaceImplementClass.newInstance()
-            return clazz.cast(interfaceImplement) ?: throw Exception()
+            val interfaceImplement = interfaceImplementClass.newInstance()!!
+            return clazz.cast(interfaceImplement)!!
         } catch (e: ClassNotFoundException) {
             throw Exception(e)
         } catch (e: InstantiationException) {

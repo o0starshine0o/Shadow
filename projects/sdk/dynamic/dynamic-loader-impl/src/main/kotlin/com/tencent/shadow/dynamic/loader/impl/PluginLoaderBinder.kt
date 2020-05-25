@@ -33,76 +33,107 @@ internal class PluginLoaderBinder(private val mDynamicPluginLoader: DynamicPlugi
     public override fun onTransact(code: Int, data: android.os.Parcel, reply: android.os.Parcel?, flags: Int): Boolean {
         when (code) {
             IBinder.INTERFACE_TRANSACTION -> {
-                reply?.writeString(PluginLoader.DESCRIPTOR)
+                reply!!.writeString(PluginLoader.DESCRIPTOR)
                 return true
             }
             PluginLoader.TRANSACTION_loadPlugin -> {
                 data.enforceInterface(PluginLoader.DESCRIPTOR)
-                val partKey = data.readString() ?: return false
-                mDynamicPluginLoader.loadPlugin(partKey)
-                reply?.writeNoException()
+                val _arg0: String
+                _arg0 = data.readString()!!
+                mDynamicPluginLoader.loadPlugin(_arg0)
+                reply!!.writeNoException()
                 return true
             }
             PluginLoader.TRANSACTION_getLoadedPlugin -> {
                 data.enforceInterface(PluginLoader.DESCRIPTOR)
-                val result: Map<*, *> = mDynamicPluginLoader.getLoadedPlugin()
-                reply?.writeNoException()
-                reply?.writeMap(result)
+                val _result = mDynamicPluginLoader.getLoadedPlugin()
+                reply!!.writeNoException()
+                reply.writeMap(_result as Map<*, *>?)
                 return true
             }
             PluginLoader.TRANSACTION_callApplicationOnCreate -> {
                 data.enforceInterface(PluginLoader.DESCRIPTOR)
-                val partKey = data.readString() ?: return false
-                mDynamicPluginLoader.callApplicationOnCreate(partKey)
-                reply?.writeNoException()
+                val _arg0: String
+                _arg0 = data.readString()!!
+                mDynamicPluginLoader.callApplicationOnCreate(_arg0)
+                reply!!.writeNoException()
                 return true
             }
             PluginLoader.TRANSACTION_convertActivityIntent -> {
                 data.enforceInterface(PluginLoader.DESCRIPTOR)
-                val arg0 = if (0 != data.readInt()) Intent.CREATOR.createFromParcel(data) else return false
-                val result = mDynamicPluginLoader.convertActivityIntent(arg0)
-                reply?.writeNoException()
-                reply?.writeInt(if (result != null) 1 else 0)
-                result?.writeToParcel(reply, android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE)
+                val _arg0: android.content.Intent?
+                if (0 != data.readInt()) {
+                    _arg0 = android.content.Intent.CREATOR.createFromParcel(data)
+                } else {
+                    _arg0 = null
+                }
+                val _result = mDynamicPluginLoader.convertActivityIntent(_arg0!!)//todo #32 去掉这个不安全的!!
+                reply!!.writeNoException()
+                if (_result != null) {
+                    reply.writeInt(1)
+                    _result.writeToParcel(reply, android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE)
+                } else {
+                    reply.writeInt(0)
+                }
                 return true
             }
             PluginLoader.TRANSACTION_startPluginService -> {
                 data.enforceInterface(PluginLoader.DESCRIPTOR)
-                val arg0 = if (0 != data.readInt()) Intent.CREATOR.createFromParcel(data) else return false
-                val result = mDynamicPluginLoader.startPluginService(arg0)
-                reply?.writeNoException()
-                reply?.writeInt(if (result != null) 1 else 0)
-                result?.writeToParcel(reply, android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE)
+                val _arg0: android.content.Intent?
+                if (0 != data.readInt()) {
+                    _arg0 = android.content.Intent.CREATOR.createFromParcel(data)
+                } else {
+                    _arg0 = null
+                }
+                val _result = mDynamicPluginLoader.startPluginService(_arg0!!)//todo #32 去掉这个不安全的!!
+                reply!!.writeNoException()
+                if (_result != null) {
+                    reply.writeInt(1)
+                    _result.writeToParcel(reply, android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE)
+                } else {
+                    reply.writeInt(0)
+                }
                 return true
             }
             PluginLoader.TRANSACTION_stopPluginService -> {
                 data.enforceInterface(PluginLoader.DESCRIPTOR)
-                val arg0 = if (0 != data.readInt()) Intent.CREATOR.createFromParcel(data) else return false
-                val result = mDynamicPluginLoader.stopPluginService(arg0)
-                reply?.writeNoException()
-                reply?.writeInt(if (result) 1 else 0)
+                val _arg0: android.content.Intent?
+                if (0 != data.readInt()) {
+                    _arg0 = android.content.Intent.CREATOR.createFromParcel(data)
+                } else {
+                    _arg0 = null
+                }
+                val _result = mDynamicPluginLoader.stopPluginService(_arg0!!)//todo #32 去掉这个不安全的!!
+                reply!!.writeNoException()
+                reply.writeInt(if (_result) 1 else 0)
                 return true
             }
             PluginLoader.TRANSACTION_bindPluginService -> {
                 data.enforceInterface(PluginLoader.DESCRIPTOR)
-                val arg0 = if (0 != data.readInt()) Intent.CREATOR.createFromParcel(data) else return false
-                val arg1 = BinderPluginServiceConnection(data.readStrongBinder())
-                val arg2 = data.readInt()
-                val result = mDynamicPluginLoader.bindPluginService(arg0, arg1, arg2)
-                reply?.writeNoException()
-                reply?.writeInt(if (result) 1 else 0)
+                val _arg0: android.content.Intent?
+                if (0 != data.readInt()) {
+                    _arg0 = android.content.Intent.CREATOR.createFromParcel(data)
+                } else {
+                    _arg0 = null
+                }
+                val _arg1 = BinderPluginServiceConnection(data.readStrongBinder())
+                val _arg2: Int
+                _arg2 = data.readInt()
+                val _result = mDynamicPluginLoader.bindPluginService(_arg0!!, _arg1, _arg2)//todo #32 去掉这个不安全的!!
+                reply!!.writeNoException()
+                reply.writeInt(if (_result) 1 else 0)
                 return true
             }
             PluginLoader.TRANSACTION_unbindService -> {
                 data.enforceInterface(PluginLoader.DESCRIPTOR)
                 mDynamicPluginLoader.unbindService(data.readStrongBinder())
-                reply?.writeNoException()
+                reply!!.writeNoException()
                 return true
             }
             PluginLoader.TRANSACTION_startActivityInPluginProcess -> {
                 data.enforceInterface(PluginLoader.DESCRIPTOR)
                 mDynamicPluginLoader.startActivityInPluginProcess(Intent.CREATOR.createFromParcel(data))
-                reply?.writeNoException()
+                reply!!.writeNoException()
                 return true
             }
         }

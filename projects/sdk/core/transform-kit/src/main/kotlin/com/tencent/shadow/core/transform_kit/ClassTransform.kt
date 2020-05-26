@@ -167,6 +167,9 @@ abstract class ClassTransform(val project: Project) : Transform() {
     open fun afterTransform(invocation: TransformInvocation) {
     }
 
+    /**
+     * transform的真正入口
+     */
     final override fun transform(invocation: TransformInvocation) {
         beforeTransform(invocation)
         input(invocation.inputs, invocation.outputProvider)

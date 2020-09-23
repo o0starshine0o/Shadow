@@ -30,8 +30,11 @@ import com.tencent.shadow.dynamic.host.DynamicRuntime;
 import com.tencent.shadow.dynamic.host.PluginManager;
 import com.tencent.shadow.sample.host.lib.HostUiLayerProvider;
 import com.tencent.shadow.sample.host.manager.Shadow;
+import com.tencent.smtt.export.external.TbsCoreSettings;
+import com.tencent.smtt.sdk.QbSdk;
 
 import java.io.File;
+import java.util.HashMap;
 
 import static android.os.Process.myPid;
 
@@ -59,6 +62,11 @@ public class HostApplication extends Application {
         PluginHelper.getInstance().init(this);
 
         HostUiLayerProvider.init(this);
+
+        HashMap map = new HashMap();
+        map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
+        map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
+        QbSdk.initTbsSettings(map);
     }
     private static void setWebViewDataDirectorySuffix(){
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {

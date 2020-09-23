@@ -19,6 +19,7 @@
 package com.tencent.shadow.core.loader.classloaders
 
 import android.os.Build
+import android.util.Log
 import dalvik.system.BaseDexClassLoader
 import java.io.File
 
@@ -43,6 +44,7 @@ class PluginClassLoader(
         parent: ClassLoader,
         private val specialClassLoader: ClassLoader?, hostWhiteList: Array<String>?
 ) : BaseDexClassLoader(dexPath, optimizedDirectory, librarySearchPath, parent) {
+    private val TAG = PluginClassLoader::class.java.simpleName
 
     /**
      * 宿主的白名单包名
@@ -66,25 +68,31 @@ class PluginClassLoader(
     @Throws(ClassNotFoundException::class)
     override fun loadClass(className: String, resolve: Boolean): Class<*> {
         if (specialClassLoader == null) {//specialClassLoader 为null 表示该classLoader依赖了其他的插件classLoader，需要遵循双亲委派
+            Log.i(TAG, "get $className from super [specialClassLoader == null]")
             return super.loadClass(className, resolve)
         } else if (className.subStringBeforeDot() == "com.tencent.shadow.core.runtime") {
+            Log.i(TAG, "get $className from loaderClassLoader")
             return loaderClassLoader.loadClass(className)
         } else if (className.inPackage(allHostWhiteList)
                 || (Build.VERSION.SDK_INT < 28 && className.startsWith("org.apache.http"))) {//Android 9.0以下的系统里面带有http包，走系统的不走本地的) {
+            Log.i(TAG, "get $className from allHostWhiteList")
             return super.loadClass(className, resolve)
         } else {
             var clazz: Class<*>? = findLoadedClass(className)
+            Log.i(TAG, "get $className from findLoadedClass: $clazz")
 
             if (clazz == null) {
                 var suppressed: ClassNotFoundException? = null
                 try {
                     clazz = findClass(className)!!
+                    Log.i(TAG, "get $className from findClass: $clazz")
                 } catch (e: ClassNotFoundException) {
                     suppressed = e
                 }
                 if (clazz == null) {
                     try {
                         clazz = specialClassLoader.loadClass(className)!!
+                        Log.i(TAG, "get $className from specialClassLoader: $clazz")
                     } catch (e: ClassNotFoundException) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                             e.addSuppressed(suppressed)

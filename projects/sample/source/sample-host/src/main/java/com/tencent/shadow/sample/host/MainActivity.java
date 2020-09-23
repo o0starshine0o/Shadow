@@ -32,6 +32,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.tencent.shadow.sample.constant.Constant;
+import com.tencent.smtt.sdk.WebView;
 
 
 public class MainActivity extends Activity {
@@ -78,6 +79,8 @@ public class MainActivity extends Activity {
             }
         });
         rootView.addView(startPluginButton);
+
+        rootView.addView(new WebView(this));
 
         setContentView(rootView);
 

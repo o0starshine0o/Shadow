@@ -21,6 +21,10 @@ package com.tencent.shadow.sample.plugin.app.lib.gallery;
 import android.app.Application;
 
 import com.tencent.shadow.sample.plugin.app.lib.gallery.cases.UseCaseManager;
+import com.tencent.smtt.export.external.TbsCoreSettings;
+import com.tencent.smtt.sdk.QbSdk;
+
+import java.util.HashMap;
 
 public class TestApplication extends Application {
 

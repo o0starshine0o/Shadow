@@ -20,12 +20,13 @@ package com.tencent.shadow.sample.plugin.app.lib.usecases.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.tencent.shadow.sample.plugin.app.lib.R;
 

@@ -24,6 +24,8 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.StrictMode;
 
+import androidx.core.content.FileProvider;
+
 import com.tencent.shadow.core.common.InstalledApk;
 import com.tencent.shadow.core.common.LoggerFactory;
 import com.tencent.shadow.core.load_parameters.LoadParameters;
@@ -125,7 +127,7 @@ public class HostApplication extends Application {
         }
         boolean isRunningEspressoTest;
         try {
-            Class.forName("android.support.test.espresso.Espresso");
+            Class.forName("androidx.test.espresso.Espresso");
             isRunningEspressoTest = true;
         } catch (Exception ignored) {
             isRunningEspressoTest = false;

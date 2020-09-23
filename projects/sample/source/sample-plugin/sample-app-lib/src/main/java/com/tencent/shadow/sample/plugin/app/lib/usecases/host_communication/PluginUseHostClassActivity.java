@@ -19,9 +19,10 @@
 package com.tencent.shadow.sample.plugin.app.lib.usecases.host_communication;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
 
 import com.tencent.shadow.sample.host.lib.HostUiLayerProvider;
 import com.tencent.shadow.sample.plugin.app.lib.gallery.BaseActivity;

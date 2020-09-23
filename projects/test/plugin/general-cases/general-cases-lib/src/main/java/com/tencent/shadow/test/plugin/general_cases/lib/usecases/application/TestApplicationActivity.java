@@ -20,8 +20,9 @@ package com.tencent.shadow.test.plugin.general_cases.lib.usecases.application;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
 
 import com.tencent.shadow.test.plugin.general_cases.lib.gallery.TestApplication;
 import com.tencent.shadow.test.plugin.general_cases.lib.gallery.util.UiUtil;

@@ -3,13 +3,14 @@ package com.tencent.shadow.test.plugin.general_cases.lib.usecases.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.tencent.shadow.test.plugin.general_cases.lib.R;
 
